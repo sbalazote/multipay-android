@@ -43,14 +43,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--<activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>-->
         <activity
             android:name="com.multipay.android.activities.SplashScreenActivity"
             android:label="@string/app_name"
@@ -92,18 +84,10 @@
             android:label="@string/title_activity_seller_menu" >
         </activity>
         <activity
-            android:name="com.multipay.android.activities.PINChangeActivity"
-            android:label="@string/pin_change_label"
-            android:windowSoftInputMode="adjustResize|stateHidden">
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.multipay.android.activities.BuyerMenuActivity" />
-        </activity>
-        <activity
             android:name="com.multipay.android.activities.PaymentHistoryActivity"
             android:label="@string/title_activity_payment_history"
-            android:windowSoftInputMode="adjustResize|stateHidden">
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:parentActivityName="com.multipay.android.activities.SellerMenuActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -112,7 +96,8 @@
         <activity
             android:name="com.multipay.android.activities.MakePaymentActivity"
             android:label="@string/title_activity_make_payment"
-            android:windowSoftInputMode="adjustResize|stateHidden">
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:parentActivityName="com.multipay.android.activities.SellerMenuActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -121,7 +106,8 @@
         <activity
             android:name="com.multipay.android.activities.AddCardActivity"
             android:label="@string/title_activity_add_card"
-            android:windowSoftInputMode="adjustResize|stateHidden">
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:parentActivityName="com.multipay.android.activities.SellerMenuActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

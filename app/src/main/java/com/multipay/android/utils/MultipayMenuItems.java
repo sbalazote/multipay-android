@@ -6,7 +6,7 @@ import android.widget.Toast;
 public class MultipayMenuItems {
 
 	public static void openHelp(Context context) {
-    	CharSequence text = "2015 - Multipay Co.\nDirijase a http://multipay.ddns.net:8080 para mas informacion";;
+    	CharSequence text = "2016 - Multipay Co.\nDirijase a http://multipay.ddns.net:8080 para mas informacion";;
     	int duration = Toast.LENGTH_LONG;
     	Toast toast = Toast.makeText(context, text, duration);
     	toast.show();

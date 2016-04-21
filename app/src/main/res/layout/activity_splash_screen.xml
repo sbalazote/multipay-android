@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/com_facebook_blue"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp" >
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/com_facebook_blue">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
 
     <ImageView
         android:id="@+id/splash_screen_logo"
@@ -12,7 +20,8 @@
         android:layout_height="274dp"
         android:layout_weight="0.97"
         android:scaleType="fitCenter"
-        android:src="@drawable/background" />
+        android:src="@drawable/background"
+        android:layout_centerHorizontal="true"/>
 
     <ProgressBar
         android:id="@+id/splash_screen_progress_bar"
@@ -32,6 +41,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/light_background_gray"
         android:textStyle="bold"
-        android:layout_centerHorizontal="true"/>
-
+        android:layout_alignEnd="@+id/splash_screen_logo"
+        android:layout_alignRight="@+id/splash_screen_logo"/>
 </RelativeLayout>

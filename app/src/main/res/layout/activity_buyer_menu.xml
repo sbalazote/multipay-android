@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:facebook="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/logged_user_info_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/com_facebook_blue"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp" >
+                xmlns:facebook="http://schemas.android.com/apk/res-auto"
+                xmlns:app="http://schemas.android.com/tools"
+                android:id="@+id/logged_user_info_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/com_facebook_blue"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
 
     <ImageView
         android:id="@+id/social_logo_imageview"
@@ -54,23 +64,13 @@
         android:drawableLeft="@drawable/ic_payment_history"
         android:onClick="paymentHistory"
         android:text="@string/payment_history_label" />
-
-    <Button
-        android:id="@+id/pin_change_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/payment_history_button"
-        android:layout_below="@+id/payment_history_button"
-        android:drawableLeft="@drawable/ic_pin_change"
-        android:onClick="PINChange"
-        android:text="@string/pin_change_label" />
     
     <Button
         android:id="@+id/view_promos_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/pin_change_button"
-        android:layout_below="@+id/pin_change_button"
+        android:layout_alignLeft="@+id/payment_history_button"
+        android:layout_below="@+id/payment_history_button"
         android:drawableLeft="@drawable/ic_view_promos"
         android:onClick="viewPromos"
         android:text="@string/view_promos_label" />

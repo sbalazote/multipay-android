@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:facebook="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/logged_user_info_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/com_facebook_blue"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp" >
+                xmlns:facebook="http://schemas.android.com/apk/res-auto"
+                xmlns:app="http://schemas.android.com/tools"
+                android:id="@+id/logged_user_info_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/com_facebook_blue">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
 
     <ImageView
         android:id="@+id/social_logo_imageview"
@@ -32,6 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/profile_username"
         android:layout_alignParentTop="true"
+        android:layout_below="@+id/my_toolbar"
         android:layout_toLeftOf="@+id/profile_username" />
 
     <TextView

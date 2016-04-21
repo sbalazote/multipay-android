@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,6 +60,8 @@ public class BuyerMenuActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		FacebookSdk.sdkInitialize(getApplicationContext());
 		setContentView(R.layout.activity_buyer_menu);
+		Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+		setSupportActionBar(myToolbar);
     	session = SessionManager.getInstance(this.getApplicationContext());
     	signInType = session.getUserSignInType();
     	name = session.getUsername();
@@ -236,11 +239,6 @@ public class BuyerMenuActivity extends AppCompatActivity {
 	public void paymentHistory(View view) {
 		Intent paymentHistoryActivityIntent = new Intent(this, PaymentHistoryActivity.class);
     	startActivity(paymentHistoryActivityIntent);
-	}
-	
-	public void PINChange(View view) {
-		Intent PINChangeActivityIntent = new Intent(this, PINChangeActivity.class);
-    	startActivity(PINChangeActivityIntent);
 	}
 	
 	public void viewPromos(View view) {

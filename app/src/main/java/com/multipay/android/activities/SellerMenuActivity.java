@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,6 +46,8 @@ public class SellerMenuActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_seller_menu);
+		Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+		setSupportActionBar(myToolbar);
 		
     	session = SessionManager.getInstance(this.getApplicationContext());
     	signInType = session.getUserSignInType();
@@ -201,11 +204,6 @@ public class SellerMenuActivity extends AppCompatActivity {
 	public void paymentHistory(View view) {
 		Intent paymentHistoryIntent = new Intent(this, PaymentHistoryActivity.class);
     	startActivity(paymentHistoryIntent);
-	}
-	
-	public void PINChange(View view) {
-		Intent PINChangeIntent = new Intent(this, PINChangeActivity.class);
-    	startActivity(PINChangeIntent);
 	}
 	
 	public void viewPromos(View view) {

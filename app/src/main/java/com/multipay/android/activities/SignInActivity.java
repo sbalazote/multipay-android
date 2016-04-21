@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -36,7 +38,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class SignInActivity extends Activity implements FacebookSignInStatus, GooglePlusSignInStatus {
+public class SignInActivity extends ActionBarActivity implements FacebookSignInStatus, GooglePlusSignInStatus {
  
     private static final String LOGCAT_TAG = "SignInActivity";
     
@@ -59,6 +61,7 @@ public class SignInActivity extends Activity implements FacebookSignInStatus, Go
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -73,6 +76,8 @@ public class SignInActivity extends Activity implements FacebookSignInStatus, Go
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_sign_in);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
         
     	session = SessionManager.getInstance(this.getApplicationContext());
         mobileId = Device.getDevice(getApplicationContext()).getMACAddress();
@@ -231,7 +236,7 @@ public class SignInActivity extends Activity implements FacebookSignInStatus, Go
 
                 @Override
                 public void onFailure(Call<LoginResponseDTO> call, Throwable t) {
-
+                    Toast.makeText(getApplicationContext(), "Multipay no ha podido autenticar. Intente nuevamente.", Toast.LENGTH_LONG).show();
                 }
             });
     }

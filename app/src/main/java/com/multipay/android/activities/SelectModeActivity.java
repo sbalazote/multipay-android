@@ -8,7 +8,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -17,7 +17,7 @@ import android.view.View;
 import com.multipay.android.multipay.R;
 import com.multipay.android.helpers.SessionManager;
 
-public class SelectModeActivity extends Activity implements SurfaceHolder.Callback {
+public class SelectModeActivity extends ActionBarActivity implements SurfaceHolder.Callback {
 
 	private MediaPlayer mediaPlayer;
 	private SurfaceView surfaceView;
@@ -28,6 +28,8 @@ public class SelectModeActivity extends Activity implements SurfaceHolder.Callba
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_mode);
+		Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+		setSupportActionBar(myToolbar);
 		session = SessionManager.getInstance(this.getApplicationContext());
 		surfaceView = (SurfaceView) findViewById(R.id.surface);
 		SurfaceHolder holder = surfaceView.getHolder();

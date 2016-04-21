@@ -1,8 +1,5 @@
 package com.multipay.android.activities;
 
-import java.io.IOException;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -10,17 +7,19 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.mercadopago.core.MercadoPago;
-import com.multipay.android.multipay.R;
 import com.multipay.android.helpers.SessionManager;
+import com.multipay.android.multipay.R;
 
-public class SplashScreenActivity extends Activity {
+import java.io.IOException;
+
+public class SplashScreenActivity extends AppCompatActivity {
 	private long ms = 0;
 	private long splashTime = 2000;
 	private boolean splashActive = true;
@@ -43,6 +42,8 @@ public class SplashScreenActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash_screen);
+		Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+		setSupportActionBar(myToolbar);
 		context = getApplicationContext();
 
 		// Obtengo atributos de preferencias de usuario de MercadoPago. 
