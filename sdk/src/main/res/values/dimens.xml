@@ -1,0 +1,16 @@
+<resources>
+
+    <dimen name="mpsdk_activity_horizontal_margin">16dp</dimen>
+    <dimen name="mpsdk_activity_vertical_margin">16dp</dimen>
+    <dimen name="mpsdk_padding_hlf">5dp</dimen>
+    <dimen name="mpsdk_padding_std">10dp</dimen>
+    <dimen name="mpsdk_regular_text">17dp</dimen>
+    <dimen name="mpsdk_box_default_stroke">1dp</dimen>
+    <dimen name="mpsdk_big_text">20dp</dimen>
+    <dimen name="mpsdk_medium_text">16dp</dimen>
+    <dimen name="mpsdk_margin_std">10dp</dimen>
+    <dimen name="mpsdk_button_height">40dp</dimen>
+    <dimen name="mpsdk_card_corner_radius">0dp</dimen>
+    <dimen name="mpsdk_card_margin">0dp</dimen>
+
+</resources>

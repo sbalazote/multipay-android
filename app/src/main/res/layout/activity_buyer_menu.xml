@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/logged_user_info_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/com_facebook_blue"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp" >
+
+    <ImageView
+        android:id="@+id/social_logo_imageview"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/profile_username"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/facebook_profile_pictureview" />
+
+    <com.facebook.login.widget.ProfilePictureView
+        android:id="@+id/facebook_profile_pictureview"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/profile_username"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/profile_username"
+        facebook:com_facebook_preset_size="small" />
+
+    <ImageView
+        android:id="@+id/gplus_profile_pictureview"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/profile_username"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/profile_username" />
+
+    <TextView
+        android:id="@+id/profile_username"
+        android:layout_width="210dip"
+        android:layout_height="100dip"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:textColor="@color/light_background_gray"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/payment_history_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/social_logo_imageview"
+        android:layout_below="@+id/profile_username"
+        android:drawableLeft="@drawable/ic_payment_history"
+        android:onClick="paymentHistory"
+        android:text="@string/payment_history_label" />
+
+    <Button
+        android:id="@+id/pin_change_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/payment_history_button"
+        android:layout_below="@+id/payment_history_button"
+        android:drawableLeft="@drawable/ic_pin_change"
+        android:onClick="PINChange"
+        android:text="@string/pin_change_label" />
+    
+    <Button
+        android:id="@+id/view_promos_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/pin_change_button"
+        android:layout_below="@+id/pin_change_button"
+        android:drawableLeft="@drawable/ic_view_promos"
+        android:onClick="viewPromos"
+        android:text="@string/view_promos_label" />
+
+    <Button
+        android:id="@+id/add_new_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/view_promos_button"
+        android:layout_below="@+id/view_promos_button"
+        android:drawableLeft="@drawable/ic_add_new_card"
+        android:onClick="addCard"
+        android:text="@string/add_new_card_label" />
+
+    <WebView
+        android:id="@+id/current_promos_webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:visibility="gone" />
+
+</RelativeLayout>

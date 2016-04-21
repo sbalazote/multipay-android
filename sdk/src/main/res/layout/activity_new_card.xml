@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/view_refresh_layout"/>
+    <include layout="@layout/view_progress_bar"/>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="@dimen/mpsdk_margin_std"
+        android:id="@+id/regularLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/mpsdk_white_background"
+                android:layout_margin="@dimen/mpsdk_card_margin"
+                card_view:cardCornerRadius="@dimen/mpsdk_card_corner_radius">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/mpsdk_card_number_label"
+                                style="@style/mpsdk_form_label"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"/>
+
+                            <ImageView
+                                android:id="@+id/pmImage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="fill_parent"
+                                android:layout_gravity="left"
+                                tools:src="@drawable/ico_tc_visa"
+                                android:layout_marginLeft="5dp"
+                                android:paddingTop="10dp"
+                                android:layout_marginBottom="10dp"/>
+
+                        </LinearLayout>
+
+                        <EditText
+                            android:id="@+id/cardNumber"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:maxLength="16"
+                            style="@style/mpsdk_form_input"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"/>
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mpsdk_card_expire_date_label"
+                            style="@style/mpsdk_form_label"
+                            android:layout_marginTop="@dimen/mpsdk_margin_std"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"/>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/expiryMonth"
+                                android:layout_width="30dp"
+                                android:layout_height="wrap_content"
+                                android:maxLength="2"
+                                android:inputType="number"
+                                android:singleLine="true"
+                                style="@style/mpsdk_form_input"
+                                android:layout_marginTop="@dimen/mpsdk_margin_std"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="/"
+                                style="@style/mpsdk_form_input"
+                                android:layout_marginBottom="5dp"
+                                android:layout_gravity="bottom" />
+
+                            <EditText
+                                android:id="@+id/expiryYear"
+                                android:layout_width="30dp"
+                                android:layout_height="wrap_content"
+                                android:maxLength="2"
+                                android:inputType="number"
+                                android:singleLine="true"
+                                style="@style/mpsdk_form_input"
+                                android:layout_marginTop="@dimen/mpsdk_margin_std"
+                                android:layout_marginLeft="10dp"/>
+
+                            <TextView
+                                android:id="@+id/expiryError"
+                                android:layout_width="30dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/mpsdk_margin_std"
+                                android:visibility="gone"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:id="@+id/cardholderNameText"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mpsdk_cardholder_name"
+                            style="@style/mpsdk_form_label"
+                            android:layout_marginBottom="10dp"/>
+
+                        <EditText
+                            android:id="@+id/cardholderName"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/cardholderNameText"
+                            android:inputType="textPersonName"
+                            style="@style/mpsdk_form_input"/>
+
+                        <RelativeLayout
+                            android:id="@+id/identificationLayout"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_below="@+id/cardholderName">
+
+                            <TextView
+                                android:id="@+id/identificationTypeText"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/mpsdk_doc_type_label"
+                                style="@style/mpsdk_form_label"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"/>
+
+                            <TextView
+                                android:id="@+id/identificationNumberText"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/mpsdk_doc_number_label"
+                                android:layout_toRightOf="@id/identificationTypeText"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
+                                style="@style/mpsdk_form_label"/>
+
+                            <EditText
+                                android:id="@+id/identificationNumber"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:maxLength="11"
+                                android:inputType="text"
+                                android:layout_below="@+id/identificationNumberText"
+                                android:layout_alignLeft="@+id/identificationNumberText"
+                                android:singleLine="true"
+                                style="@style/mpsdk_form_input"/>
+
+                            <Spinner
+                                android:id="@+id/identificationType"
+                                android:layout_width="100dp"
+                                android:layout_height="36dp"
+                                android:layout_below="@+id/identificationTypeText"
+                                android:layout_alignBottom="@id/identificationNumber"/>
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/securityCodeLayout"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:layout_margin="@dimen/mpsdk_margin_std">
+
+                        <TextView
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:id="@+id/text_cod_seg"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mpsdk_security_code"
+                            style="@style/mpsdk_form_label" />
+
+                        <EditText
+                            android:id="@+id/securityCode"
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/text_cod_seg"
+                            android:maxLength="4"
+                            android:inputType="number"
+                            android:singleLine="true"
+                            android:imeOptions="actionGo"
+                            android:layout_marginTop="@dimen/mpsdk_margin_std"
+                            style="@style/mpsdk_form_input"/>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/mpsdk_margin_std">
+
+                            <ImageView
+                                android:id="@+id/cVVImage"
+                                android:layout_width="115dp"
+                                android:layout_height="70dp"
+                                android:layout_gravity="right"
+                                android:layout_marginBottom="10dp"
+                                tools:src="@drawable/bank" />
+
+                            <TextView
+                                android:id="@+id/cVVDescriptor"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                tools:text="@string/mpsdk_cod_seg_desc"
+                                style="@style/mpsdk_help_text" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mpsdk_button_height"
+                android:layout_margin="@dimen/mpsdk_margin_std"
+                android:text="@string/mpsdk_continue_label"
+                android:onClick="submitForm"
+                style="@style/mpsdk_button_normal"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

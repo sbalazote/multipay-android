@@ -1,0 +1,24 @@
+<FrameLayout
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="@color/mpsdk_white"
+    android:minHeight="45dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+        <TextView
+            android:id="@+id/label"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            tools:text="Visa"
+            tools:drawableLeft="@drawable/ico_tc_visa"
+            android:drawablePadding="10dp"
+            style="@style/mpsdk_list_label"/>
+
+</FrameLayout>
+

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <stroke
+        android:height="@dimen/mpsdk_box_default_stroke"
+        android:width="@dimen/mpsdk_box_default_stroke"
+        android:color="@color/mpsdk_separator" />
+     <solid android:color="@color/mpsdk_white_background" />
+
+    <padding
+        android:bottom="@dimen/mpsdk_box_default_stroke"
+        android:left="@dimen/mpsdk_box_default_stroke"
+        android:right="@dimen/mpsdk_box_default_stroke"
+        android:top="@dimen/mpsdk_box_default_stroke" />
+
+</shape>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MultiPay</string>
+    <string name="version_name">1.0.0</string>
+    <string name="preference_file_key">multipay_pf_file</string>
+    <string name="server_client_id">2sSuWE33qj6jaVAU12Ttilvt</string>
+    <!--<string name="google_app_id">api-project-437797444824</string>-->
+    <string name="action_settings">Ajustes</string>
+    <string name="add_card_form_number_input_label">Número de tarjeta</string>
+    <string name="add_card_form_expire_date_input_label">Válida hasta</string>
+    <string name="add_card_form_expire_date_hint">Mes / Año</string>
+    <string name="add_card_form_last_and_first_name_input">Nombre y apellido impreso en la tarjeta</string>
+    <string name="add_card_form_document_type_input">Tipo</string>
+    <string name="add_card_form_document_number_input">Documento</string>
+    <string name="add_card_form_security_code_input">Código de seguridad</string>
+    <string name="add_card_form_security_code_hint">##CANT## dígitos al ##WHERE## de la tarjeta</string>
+    <string name="add_card_form_save_button">AGREGAR TARJETA</string>
+    <string name="mp_html_total_wo_installments"><![CDATA[ <strong> %2$s %1$s </strong>]]></string>
+    <string name="mp_html_total_w_installments"><![CDATA[ <strong> %1$s x %4$s %2$s</strong> <font color="grey">(%4$s %3$s)</font>  ]]></string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="spinner_header">asdf</string>
+    <string name="title_activity_test">test</string>
+    <string name="login">Login</string>
+    <string name="user">"Usuario: "</string>
+    <string name="password">"Contraseña: "</string>
+    <string name="signin_button">INICIAR SESIÓN</string>
+    <string name="signup_button">REGISTRARSE</string>
+    <string name="not_registered_text">No esta registrado? Registrese!</string>
+    <string name="NFC_status">Estado NFC</string>
+    <string name="about">i</string>
+    <!-- Button text -->
+    <string name="btn_logout_from_google">Logout from Google</string>
+    <string name="btn_revoke_access">Revoke Access</string>
+    <string name="title_activity_add_card">Nueva tarjeta</string>
+    <string name="add_new_card_label">Asociar Nueva Tarjeta</string>
+    <string name="payment_history_label">Historial de Pagos</string>
+    <string name="view_promos_label">Promos vigentes</string>
+    <string name="pin_change_label">Cambiar PIN</string>
+    <string name="empty_credit_cards_label">No hay tarjetas asociadas</string>
+    <string name="make_payment_label">GENERAR PAGO</string>
+    <string name="facebook_app_id">1614630515425381</string>
+    <string name="action_about">Más información</string>
+    <string name="action_help">Ayuda</string>
+    <string name="action_logout">Cerrar Sesion</string>
+    <string name="action_make_payment">Pagar</string>
+    <string name="action_overflow">""</string>
+    <string name="title_activity_buyer_menu">Menu del Comprador</string>
+    <string name="title_activity_seller_menu">Menu del Vendedor</string>
+    <string name="title_activity_sign_in">Ingresar</string>
+    <string name="social_network_login_text">O bien inicia sesion con</string>
+    <string name="email_input_placeholder">Email</string>
+    <string name="password_input_placeholder">Contraseña</string>
+    <string name="name_input_placeholder">Nombres</string>
+    <string name="surname_input_placeholder">Apellido</string>
+    <string name="document_number_input_placeholder">Numero de Documento</string>
+    <string name="street_name_input_placeholder">Calle</string>
+    <string name="street_number_input_placeholder">Nro. Calle</string>
+    <string name="zip_code_input_placeholder">Cod. Postal</string>
+    <string name="area_code_input_placeholder">Cod. Area</string>
+    <string name="phone_number_input_placeholder">Tel.</string>
+    
+    <string name="item_title_textview_label">Titulo del Articulo (opcional)</string>
+    <string name="item_title_edittext_hint">Articulo generico</string>
+    <string name="price_textview_label">Precio del Articulo</string>
+    <string name="price_edittext_hint">0.00</string>
+    <string name="item_category_textview_label">Rubro</string>
+    <string name="item_description_textview_label">Descripcion (opcional)</string>
+    <string name="item_description_edittext_hint">Publicado por Multipay NFC</string>
+    <string name="payment_methods_textview_label">Metodos de Pago Aceptados</string>
+    <string name="max_installments_textview_label">Max. Cant. de Cuotas</string>
+    <string name="send_payment_link_button_label">ENVIAR LINK DE PAGO</string>
+    
+    
+    <string name="old_PIN">PIN anterior</string>
+    <string name="new_PIN">PIN nuevo</string>
+    <string name="pin_change_button">CAMBIAR</string>
+    <string name="title_activity_payment_history">Historial de Pagos</string>
+    <string name="title_activity_make_payment">Realizar Pago</string>
+    <string name="title_activity_sign_up">Registrarse</string>
+    <string name="title_activity_payment_link_beam">Enlace NFC Link de Pago</string>
+    <string name="title_activity_select_mode">¿Deseas COMPRAR o VENDER?</string>
+    <string name="seller_mode_login">VENDER</string>
+    <string name="buyer_mode_login">COMPRAR</string>
+    
+    <string name="document_type_prompt">Seleccione tipo de doc...</string>
+    
+    <style name="ButtonText">
+    <!-- <item name="android:layout_width">fill_parent</item>
+    <item name="android:layout_height">wrap_content</item> -->
+    <item name="android:textColor">#ffffff</item>
+    <item name="android:gravity">center</item>
+    <item name="android:layout_margin">3dp</item>
+    <item name="android:textSize">25dp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:shadowColor">#000000</item>
+    <item name="android:shadowDx">1</item>
+    <item name="android:shadowDy">1</item>
+    <item name="android:shadowRadius">2</item>
+    
+</style>
+
+</resources>

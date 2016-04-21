@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_progress_bar"/>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/mpsdk_card_margin"
+                card_view:cardCornerRadius="@dimen/mpsdk_card_corner_radius">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/icon"
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        tools:src="@drawable/ic_approved"
+                        android:layout_gravity="center_horizontal" />
+
+                    <TextView
+                        android:id="@+id/description"
+                        android:layout_width="fill_parent"
+                        android:gravity="bottom|center"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        tools:text="APROBADO"
+                        style="@style/mpsdk_big_text_light"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/mpsdk_white_background"
+                android:layout_margin="@dimen/mpsdk_card_margin"
+                card_view:cardCornerRadius="@dimen/mpsdk_card_corner_radius">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical">
+
+                    <!-- operation amount -->
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="?android:attr/listPreferredItemHeight"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:id="@+id/totalLayout"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mpsdk_total_amount"
+                            android:paddingBottom="5dp"
+                            style="@style/mpsdk_form_label"/>
+
+                        <TextView
+                            android:id="@+id/amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="$ 100,50"
+                            style="@style/mpsdk_form_label"/>
+
+                    </LinearLayout>
+
+                    <include layout="@layout/view_dashed_line_separator"/>
+
+                    <!--  payment method detail -->
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="?android:attr/listPreferredItemHeight"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mpsdk_payment_method_detail"
+                            android:paddingBottom="5dp"
+                            style="@style/mpsdk_form_label"/>
+
+                        <TextView
+                            android:id="@+id/paymentMethod"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:singleLine="true"
+                            tools:text="terminada en 0000"
+                            tools:drawableLeft="@drawable/ico_tc_visa"
+                            android:drawablePadding="10dp"
+                            style="@style/mpsdk_form_label"/>
+
+                    </LinearLayout>
+
+                    <include layout="@layout/view_dashed_line_separator"/>
+
+                    <!--  payment id -->
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="?android:attr/listPreferredItemHeight"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:id="@+id/operationLayout"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mpsdk_operation"
+                            android:paddingBottom="5dp"
+                            style="@style/mpsdk_form_label"/>
+
+                        <TextView
+                            android:id="@+id/paymentId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="123123"
+                            style="@style/mpsdk_form_label"/>
+
+                    </LinearLayout>
+
+                    <include layout="@layout/view_dashed_line_separator"/>
+
+                    <!-- operation date -->
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="?android:attr/listPreferredItemHeight"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:id="@+id/dateLayout"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mpsdk_date_created"
+                            android:paddingBottom="5dp"
+                            style="@style/mpsdk_form_label"/>
+
+                        <TextView
+                            android:id="@+id/dateCreated"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="12/10"
+                            style="@style/mpsdk_form_label"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mpsdk_button_height"
+                android:text="@string/mpsdk_finish_label"
+                android:onClick="finalize"
+                android:layout_margin="10dp"
+                style="@style/mpsdk_button_normal"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

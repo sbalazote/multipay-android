@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/refreshLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:onClick="refreshLayout"
+    android:visibility="gone">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@drawable/ic_refresh"
+            android:layout_gravity="center_horizontal|top"/>
+
+        <TextView android:layout_width="wrap_content"
+            android:layout_marginTop="25dp"
+            android:gravity="bottom|center"
+            android:textAlignment="gravity"
+            android:layout_height="wrap_content"
+            android:text="@string/mpsdk_refresh_message"
+            android:layout_gravity="center_horizontal|top"
+            style="@style/mpsdk_big_text_light"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

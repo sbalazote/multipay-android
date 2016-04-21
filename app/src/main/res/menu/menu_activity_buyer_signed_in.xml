@@ -1,0 +1,28 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:multipay="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_logout"
+        android:icon="@drawable/ic_action_logout"
+        multipay:showAsAction="always"
+        android:title="@string/action_logout"/>
+    <item
+        android:id="@+id/action_overflow"
+        android:icon="@drawable/ic_action_overflow"
+        multipay:showAsAction="always"
+        android:title="@string/action_overflow">
+        <menu>
+            <item
+                android:id="@+id/action_about"
+                android:icon="@drawable/ic_action_about"
+                multipay:showAsAction="ifRoom"
+                android:title="@string/action_about"/>
+            <item
+                android:id="@+id/action_help"
+                android:icon="@drawable/ic_action_help"
+                multipay:showAsAction="ifRoom"
+                android:title="@string/action_help"/>
+        </menu>
+    </item>
+
+</menu>

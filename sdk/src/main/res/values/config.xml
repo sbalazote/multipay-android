@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="mpsdk_comma_separator">,</string>
+    <string name="mpsdk_bank_deals_image_location">http://static.mlstatic.com/org-img/MP/app/wallet/android/promos-bancos/</string>
+
+</resources>

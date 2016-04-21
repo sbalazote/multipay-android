@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/add_card_form_scrollview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/com_facebook_blue"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp" >
+
+    <LinearLayout
+        android:id="@+id/add_card_form_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <ImageView
+            android:id="@+id/app_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/background" />
+
+        <TextView
+            android:id="@+id/item_title_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_vertical"
+            android:text="@string/item_title_textview_label"
+            android:textColor="@color/purple01" />
+
+        <EditText
+            android:id="@+id/item_title_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/item_title_edittext_hint"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textColor="@color/dark_gray" />
+
+        <TextView
+            android:id="@+id/price_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/price_textview_label"
+            android:textColor="@color/purple01"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/price_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:ems="10"
+            android:hint="@string/price_edittext_hint"
+            android:inputType="numberDecimal"
+            android:singleLine="true" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/item_category_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/item_category_textview_label"
+            android:textColor="@color/purple01"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/item_category_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:id="@+id/item_description_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_vertical"
+            android:text="@string/item_description_textview_label"
+            android:textColor="@color/purple01" />
+
+        <EditText
+            android:id="@+id/item_description_editview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:ems="10"
+            android:hint="@+id/item_description_edittext_hint"
+            android:singleLine="true"
+            android:textColor="@color/dark_gray" />
+
+        <TextView
+            android:id="@+id/payment_methods_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/payment_methods_textview_label"
+            android:textColor="@color/purple01"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/payment_methods_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/max_installments_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/max_installments_textview_label"
+            android:textColor="@color/purple01"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/max_installments_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/send_payment_link_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/purple_logo"
+            android:gravity="center"
+            android:onClick="sendPaymentLink"
+            android:text="@string/send_payment_link_button_label"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</ScrollView>

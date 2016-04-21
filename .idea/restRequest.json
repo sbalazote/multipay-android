@@ -1,0 +1,8 @@
+{
+  "uri": "https://api.mercadopago.com/v1/customers/1?access_token\u003dTEST-3108634673635661-040716-33a906fea1e9862927e85dffed01eaae__LB_LC__-73449193",
+  "method": "GET",
+  "body": "email\u003dwinning.com@gmail.com",
+  "headers": {
+    "Accept": "application/json"
+  }
+}

@@ -1,0 +1,16 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:drawablePadding="@dimen/mpsdk_padding_hlf"
+        android:paddingLeft="@dimen/mpsdk_padding_std"
+        style="@style/mpsdk_simple_spinner"/>
+
+</RelativeLayout>
