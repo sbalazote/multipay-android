@@ -117,8 +117,10 @@ public class SessionManager {
 				LoginManager.getInstance().logOut();
 			}
 			//Session.setActiveSession(null);
-		} else {
+		} else if (signInType.compareTo("GOOGLE") == 0) {
 			GooglePlusSignInUtils.signOutFromGplus();
+		} else {
+			// TODO desloguear nativo
 		}
 		editor.clear();
 		editor.commit();

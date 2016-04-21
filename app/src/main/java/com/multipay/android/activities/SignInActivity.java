@@ -145,7 +145,7 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
     public void onSuccessFacebookSignIn(Bundle profile) {
 
         // Si existe no hago nada, sino lo inserto donde corresponda.
-        final String SOCIAL_NETWORK = "FACEBOOK ";
+        final String SOCIAL_NETWORK = "FACEBOOK";
         Log.i(LOGCAT_TAG, SOCIAL_NETWORK + profile.getString(FacebookSignInUtils.FACEBOOK_USERID));
         Log.i(LOGCAT_TAG, SOCIAL_NETWORK + profile.getString(FacebookSignInUtils.FACEBOOK_EMAIL));
         Log.i(LOGCAT_TAG, SOCIAL_NETWORK + profile.getString(FacebookSignInUtils.FACEBOOK_NAME));
@@ -156,7 +156,7 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
 
     @Override
     public void onSuccessGooglePlusSignIn(Bundle profile) {
-        final String SOCIAL_NETWORK = "GOOGLE ";
+        final String SOCIAL_NETWORK = "GOOGLE";
         Log.i(LOGCAT_TAG, SOCIAL_NETWORK + profile.getString(GooglePlusSignInUtils.GOOGLEPLUS_USERID));
         Log.i(LOGCAT_TAG, SOCIAL_NETWORK + profile.getString(GooglePlusSignInUtils.GOOGLEPLUS_EMAIL));
         Log.i(LOGCAT_TAG, SOCIAL_NETWORK + profile.getString(GooglePlusSignInUtils.GOOGLEPLUS_NAME));

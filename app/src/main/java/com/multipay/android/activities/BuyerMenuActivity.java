@@ -3,7 +3,6 @@ package com.multipay.android.activities;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -142,18 +141,12 @@ public class BuyerMenuActivity extends AppCompatActivity {
     
     private void makeMeRequest() {
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
-		// LLamada a la API para obtener informacion del usuario y defino un callback para manejar la respuesta.
 		GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
-
 					@Override
 					public void onCompleted(JSONObject user, GraphResponse response) {
-						// If the response is successful
 						if (user != null) {
-							// Set the id for the ProfilePictureView
-							// view that in turn displays the profile picture.
+							// Set the id for the ProfilePictureView view that in turn displays the profile picture.
 							facebookProfilePicture.setProfileId(user.optString("id"));
-							// Set the Textview's text to the user's name.
-							//userNameView.setText(user.getName());
 						}
 
 						if (response.getError() != null) {
@@ -162,27 +155,6 @@ public class BuyerMenuActivity extends AppCompatActivity {
 					}
 				}
 		);
-		/*Session session = Session.getActiveSession();
-		// Make an API call to get user data and define a 
-		// new callback to handle the response.
-		Request request = Request.newMeRequest(session,
-				new LoginClient.Request.GraphUserCallback() {
-			@Override
-			public void onCompleted(GraphUser user, Response response) {
-				// If the response is successful
-				if (user != null) {
-					// Set the id for the ProfilePictureView
-					// view that in turn displays the profile picture.
-					facebookProfilePicture.setProfileId(user.getId());
-					// Set the Textview's text to the user's name.
-					//userNameView.setText(user.getName());
-				}
-
-				if (response.getError() != null) {
-					// Handle errors, will do so later.
-				}
-			}
-		});*/
 		request.executeAsync();
 	}
 

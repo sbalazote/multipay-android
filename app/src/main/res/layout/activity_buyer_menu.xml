@@ -4,10 +4,7 @@
                 xmlns:app="http://schemas.android.com/tools"
                 android:id="@+id/logged_user_info_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/com_facebook_blue"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -24,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/profile_username"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentTop="false"
         android:layout_toLeftOf="@+id/facebook_profile_pictureview" />
 
     <com.facebook.login.widget.ProfilePictureView
@@ -32,7 +29,7 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/profile_username"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentTop="false"
         android:layout_toLeftOf="@+id/profile_username"
         facebook:com_facebook_preset_size="small" />
 

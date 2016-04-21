@@ -8,7 +8,7 @@ public class Constant {
 
     // * Merchant server vars
     public static final String MERCHANT_BASE_URL = "http://10.0.2.2:5000/";
-    public static final String MERCHANT_GET_CUSTOMER_URI = "/checkout/examples/getCustomer";
-    public static final String MERCHANT_CREATE_PAYMENT_URI = "/checkout/examples/doPayment";
-    public static final String MERCHANT_GET_DISCOUNT_URI = "/checkout/examples/getDiscounts";
+    public static final String MERCHANT_GET_CUSTOMER_URI = "/api/getCustomer";
+    public static final String MERCHANT_CREATE_PAYMENT_URI = "/api/doPayment";
+    public static final String MERCHANT_GET_DISCOUNT_URI = "/api/getDiscounts";
 }
