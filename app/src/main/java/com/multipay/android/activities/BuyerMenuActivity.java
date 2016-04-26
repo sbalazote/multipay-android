@@ -77,24 +77,19 @@ public class BuyerMenuActivity extends AppCompatActivity {
 		profileUsername = (TextView) findViewById(R.id.profile_username);
 		
 		current_promos = (WebView) findViewById(R.id.current_promos_webView);
-		/*WebSettings webSettings = current_promos.getSettings();
-		webSettings.setBuiltInZoomControls(true);
-		webSettings.setLoadWithOverviewMode(true);
-		webSettings.setUseWideViewPort(true);
-		current_promos.loadUrl("https://www.mercadopago.com/mla/credit_card_promos.htm");*/
-		
+
 		// Get the user's data.
-		if (signInType.compareTo("FACEBOOK") == 0) {
+		if (signInType.equals("FACEBOOK")) {
 			socialLogo.setImageResource(R.drawable.facebook_logo__blue);
 			facebookProfilePicture.setVisibility(View.VISIBLE);
 			makeMeRequest();
 			gPlusProfilePicture.setVisibility(View.GONE);
 			profileUsername.setText(name);
-		} else if (signInType.compareTo("GOOGLE") == 0) {
+		} else if (signInType.equals("GOOGLE")) {
 			socialLogo.setImageResource(R.drawable.gplus_logo);
 			facebookProfilePicture.setVisibility(View.GONE);
 			gPlusProfilePicture.setVisibility(View.VISIBLE);
-			new LoadImage(gPlusProfilePicture).execute(GooglePlusSignInUtils.GooglePlusProfilePhotoUrl);
+			new LoadImage(gPlusProfilePicture).execute(GooglePlusSignInUtils.googlePlusProfilePhotoUrl);
 			profileUsername.setText(name);
 		} else {
 			socialLogo.setImageResource(R.drawable.ic_logo_multipay);
@@ -138,8 +133,8 @@ public class BuyerMenuActivity extends AppCompatActivity {
 			current_promos.setVisibility(View.GONE);
 		}
     }
-    
-    private void makeMeRequest() {
+
+	private void makeMeRequest() {
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
 		GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
 					@Override

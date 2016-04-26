@@ -16,7 +16,15 @@ import retrofit2.http.POST;
  * Created by Sebastian on 19/04/2016.
  */
 public interface LoginService {
-    @POST("/api/login")
+    @POST("/api/attemptNativeLogin")
     @Headers("Accept: application/json")
-    Call<LoginResponseDTO> login(@Body LoginRequestDTO loginRequestDTO);
+    Call<LoginResponseDTO> attemptNativeLogin(@Body LoginRequestDTO loginRequestDTO);
+
+    @POST("/api/googleTokenInfo")
+    @Headers("Accept: application/json")
+    Call<LoginResponseDTO> googleTokenInfo(@Body String tokenId);
+
+    @POST("/api/facebookTokenInfo")
+    @Headers("Accept: application/json")
+    Call<LoginResponseDTO> facebookTokenInfo(@Body String accessToken);
 }

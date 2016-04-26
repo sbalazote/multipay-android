@@ -35,17 +35,17 @@ public class FacebookSignInUtils implements ProfilePictureView.OnErrorListener {
     public static final String FACEBOOK_FIRST_NAME = "first_name";
     public static final String FACEBOOK_LAST_NAME = "last_name";
     public static final String FACEBOOK_USERID = "userid";
+	public static final String FACEBOOK_ACCESS_TOKEN = "access_token";
 	private Context context;
 	private LoginButton facebookSignInButton;
 	private CallbackManager callbackManager;
 	private AccessTokenTracker accessTokenTracker;
-	private AccessToken accessToken;
 	private ProfileTracker profileTracker;
 	private static final List<String> PERMISSIONS = Arrays.asList("public_profile", "email");
 	private FacebookSignInStatus facebookSignInStatus;
 	private ProfilePictureView facebookProfilePictureView;
 	private TextView userNameView;
-	
+
 	public FacebookSignInUtils(Activity activity) {
 		this.context = activity.getApplicationContext();
 		facebookSignInButton = (LoginButton) activity.findViewById(R.id.facebook_sign_in_button);
@@ -83,7 +83,7 @@ public class FacebookSignInUtils implements ProfilePictureView.OnErrorListener {
 			}
 		};
 		// If the access token is available already assign it.
-		accessToken = AccessToken.getCurrentAccessToken();
+		AccessToken accessToken = AccessToken.getCurrentAccessToken();
 
 		profileTracker = new ProfileTracker() {
 			@Override
@@ -127,35 +127,10 @@ public class FacebookSignInUtils implements ProfilePictureView.OnErrorListener {
 	}
 	
 	private void requestUserInfo() {
+		Bundle profile = new Bundle();
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
-		// LLamada a la API para obtener informacion del usuario y defino un callback para manejar la respuesta.
-		GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
-			@Override
-			public void onCompleted(JSONObject user, GraphResponse response) {
-				// Si la respuesta fue exitosa.
-				if (user != null) {
-					// Seteo el id para la foto de perfil.
-					facebookProfilePictureView.setProfileId(user.optString("id"));
-					// Seteo el TextView para que muestre el nombre de usuario Facebook.
-					userNameView.setText(user.optString("name"));
-
-					Bundle profile = new Bundle();
-					profile.putString(FACEBOOK_NAME, user.optString("name"));
-					profile.putString(FACEBOOK_EMAIL, user.optString("email"));
-					profile.putString(FACEBOOK_USERID, user.optString("id"));
-					profile.putString(FACEBOOK_FIRST_NAME,user.optString("first_name"));
-					profile.putString(FACEBOOK_LAST_NAME, user.optString("last_name"));
-					facebookSignInStatus.onSuccessFacebookSignIn(profile);
-				}
-				if (response.getError() != null) {
-					// TODO Manejo de errores.
-				}
-			}
-		});
-		Bundle parameters = new Bundle();
-		parameters.putString("fields", "id,name,first_name,last_name,email");
-		request.setParameters(parameters);
-		request.executeAsync();
+		profile.putString(FACEBOOK_ACCESS_TOKEN, accessToken.getToken());
+		facebookSignInStatus.onSuccessFacebookSignIn(profile);
 	}
 	
 	public interface FacebookSignInStatus {

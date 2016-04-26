@@ -72,17 +72,17 @@ public class SellerMenuActivity extends AppCompatActivity {
 		current_promos.loadUrl("https://www.mercadopago.com/mla/credit_card_promos.htm");
 		
 		// Get the user's data.
-		if (signInType.compareTo("FACEBOOK") == 0) {
+		if (signInType.equals("FACEBOOK")) {
 			socialLogo.setImageResource(R.drawable.facebook_logo__blue);
 			facebookProfilePicture.setVisibility(View.VISIBLE);
 			makeMeRequest();
 			gPlusProfilePicture.setVisibility(View.GONE);
 			profileUsername.setText(name);
-		} else if (signInType.compareTo("GOOGLE") == 0) {
+		} else if (signInType.equals("GOOGLE")) {
 			socialLogo.setImageResource(R.drawable.gplus_logo);
 			facebookProfilePicture.setVisibility(View.GONE);
 			gPlusProfilePicture.setVisibility(View.VISIBLE);
-			new LoadProfileImage(gPlusProfilePicture).execute(GooglePlusSignInUtils.GooglePlusProfilePhotoUrl);
+			new LoadProfileImage(gPlusProfilePicture).execute(GooglePlusSignInUtils.googlePlusProfilePhotoUrl);
 			profileUsername.setText(name);
 		} else {
 			socialLogo.setImageResource(R.drawable.ic_logo_multipay);

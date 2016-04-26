@@ -1,14 +1,11 @@
 package com.multipay.android.activities;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,7 +45,7 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
     private EditText email;
     private EditText password;
  
-    public static ProgressDialog mConnectionProgressDialog;
+    private ProgressDialog mConnectionProgressDialog;
     
     private SessionManager session;
     private String mobileId;
@@ -93,7 +90,7 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
         password = (EditText) findViewById(R.id.password_input);
         
         mConnectionProgressDialog = new ProgressDialog(this);
-        mConnectionProgressDialog.setMessage("Conectandose...\nTu telefono se esta contactando con Google.\nEsta accion puede demorar hasta 5 minuntos.");
+        mConnectionProgressDialog.setMessage("Autenticandose...\nEspere un momento, por favor.");
     }
     
     // se llama despues de onPause()
@@ -138,31 +135,14 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
     	googlePlusSignInUtils.onActivityResult(requestCode, responseCode, intent);
     }
 
-    /*
-    *   Verifico con el mail y id como password si existe en nuestra base de datos como Vendedor o Comprador. Sino lo inserto y prosigo
-     */
     @Override
     public void onSuccessFacebookSignIn(Bundle profile) {
-
-        // Si existe no hago nada, sino lo inserto donde corresponda.
-        final String SOCIAL_NETWORK = "FACEBOOK";
-        Log.i(LOGCAT_TAG, SOCIAL_NETWORK + profile.getString(FacebookSignInUtils.FACEBOOK_USERID));
-        Log.i(LOGCAT_TAG, SOCIAL_NETWORK + profile.getString(FacebookSignInUtils.FACEBOOK_EMAIL));
-        Log.i(LOGCAT_TAG, SOCIAL_NETWORK + profile.getString(FacebookSignInUtils.FACEBOOK_NAME));
-        Log.i(LOGCAT_TAG, SOCIAL_NETWORK + profile.getString(FacebookSignInUtils.FACEBOOK_FIRST_NAME));
-        Log.i(LOGCAT_TAG, SOCIAL_NETWORK + profile.getString(FacebookSignInUtils.FACEBOOK_LAST_NAME));
-        attemptLogin(profile.getString(FacebookSignInUtils.FACEBOOK_EMAIL), profile.getString(FacebookSignInUtils.FACEBOOK_USERID), SOCIAL_NETWORK);
+        facebookTokenInfo(profile.getString(FacebookSignInUtils.FACEBOOK_ACCESS_TOKEN));
     }
 
     @Override
     public void onSuccessGooglePlusSignIn(Bundle profile) {
-        final String SOCIAL_NETWORK = "GOOGLE";
-        Log.i(LOGCAT_TAG, SOCIAL_NETWORK + profile.getString(GooglePlusSignInUtils.GOOGLEPLUS_USERID));
-        Log.i(LOGCAT_TAG, SOCIAL_NETWORK + profile.getString(GooglePlusSignInUtils.GOOGLEPLUS_EMAIL));
-        Log.i(LOGCAT_TAG, SOCIAL_NETWORK + profile.getString(GooglePlusSignInUtils.GOOGLEPLUS_NAME));
-        Log.i(LOGCAT_TAG, SOCIAL_NETWORK + profile.getString(GooglePlusSignInUtils.GOOGLEPLUS_FIRST_NAME));
-        Log.i(LOGCAT_TAG, SOCIAL_NETWORK + profile.getString(GooglePlusSignInUtils.GOOGLEPLUS_LAST_NAME));
-        attemptLogin(profile.getString(GooglePlusSignInUtils.GOOGLEPLUS_EMAIL), profile.getString(GooglePlusSignInUtils.GOOGLEPLUS_USERID), SOCIAL_NETWORK);
+        googleTokenInfo(profile.getString(GooglePlusSignInUtils.GOOGLEPLUS_TOKEN_ID));
     }
     
     public void signIn(View view) {
@@ -184,11 +164,11 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
         }
 
         if (!cancel) {
-                attemptLogin(userEmail, userPassword, "NATIVE");
+            attemptNativeLogin(userEmail, userPassword);
 
         } else {
-                // Se devuelve el foco al campo que no fue completado.
-                focusView.requestFocus();
+            // Se devuelve el foco al campo que no fue completado.
+            focusView.requestFocus();
         }
     }
     
@@ -196,49 +176,134 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
         this.loginResponse = loginResponse;
     }
 
-    private void attemptLogin(final String userEmail, final String userPassword, final String signInType) {
+    private void attemptNativeLogin(final String userEmail, final String userPassword) {
         LoginRequestDTO userLogin = new LoginRequestDTO();
         userLogin.setUserEmail(userEmail);
         userLogin.setUserPassword(userPassword);
         userLogin.setMobileId(this.mobileId);
-
-        Call<LoginResponseDTO> call = loginService.login(userLogin);
+        mConnectionProgressDialog.show();
+        Call<LoginResponseDTO> call = loginService.attemptNativeLogin(userLogin);
         call.enqueue(new Callback<LoginResponseDTO>() {
-               @Override
-                public void onResponse(Call<LoginResponseDTO> call, Response<LoginResponseDTO> response) {
-
-                   setLoginResponse(response.body());
-                   Boolean valid;
-                   if (loginResponse != null) {
-                       valid = loginResponse.getValid();
-                       if (valid) {
-                           session.createSignInSession(loginResponse.getUserName(), userEmail, signInType);
-                           if (session.getMode().equals("SELLER")) {
-                               Intent sellerMenuActivityIntent = new Intent(getApplicationContext(), SellerMenuActivity.class);
-                               sellerMenuActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                               startActivity(sellerMenuActivityIntent);
-                           } else {
-                               Intent buyerMenuActivityIntent = new Intent(getApplicationContext(), BuyerMenuActivity.class);
-                               buyerMenuActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                               startActivity(buyerMenuActivityIntent);
-                           }
-                           finish();
-                       } else {
-                           Toast.makeText(getApplicationContext(), loginResponse.getMessage(), Toast.LENGTH_LONG).show();
-                           email.setText("");
-                           password.setText("");
-                           email.requestFocus();
-                       }
-                   } else {
-                       Toast.makeText(getApplicationContext(), "Multipay no ha podido autenticar. Intente nuevamente.", Toast.LENGTH_LONG).show();
-                   }
-                }
-
-                @Override
-                public void onFailure(Call<LoginResponseDTO> call, Throwable t) {
+            @Override
+            public void onResponse(Call<LoginResponseDTO> call, Response<LoginResponseDTO> response) {
+                mConnectionProgressDialog.dismiss();
+                setLoginResponse(response.body());
+                Boolean valid;
+                if (loginResponse != null) {
+                    valid = loginResponse.getValid();
+                    if (valid) {
+                        session.createSignInSession(loginResponse.getUserName(), loginResponse.getUserEmail(), "NATIVE");
+                        if (session.getMode().equals("SELLER")) {
+                            Intent sellerMenuActivityIntent = new Intent(getApplicationContext(), SellerMenuActivity.class);
+                            sellerMenuActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(sellerMenuActivityIntent);
+                        } else {
+                            Intent buyerMenuActivityIntent = new Intent(getApplicationContext(), BuyerMenuActivity.class);
+                            buyerMenuActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(buyerMenuActivityIntent);
+                        }
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), loginResponse.getMessage(), Toast.LENGTH_LONG).show();
+                        email.setText("");
+                        password.setText("");
+                        email.requestFocus();
+                    }
+                } else {
                     Toast.makeText(getApplicationContext(), "Multipay no ha podido autenticar. Intente nuevamente.", Toast.LENGTH_LONG).show();
                 }
-            });
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponseDTO> call, Throwable t) {
+                mConnectionProgressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), "Multipay no ha podido autenticar. Intente nuevamente.", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void googleTokenInfo(String tokenId) {
+        mConnectionProgressDialog.show();
+        Call<LoginResponseDTO> call = loginService.googleTokenInfo(tokenId);
+        call.enqueue(new Callback<LoginResponseDTO>() {
+            @Override
+            public void onResponse(Call<LoginResponseDTO> call, Response<LoginResponseDTO> response) {
+                mConnectionProgressDialog.dismiss();
+                setLoginResponse(response.body());
+                Boolean valid;
+                if (loginResponse != null) {
+                    valid = loginResponse.getValid();
+                    if (valid) {
+                        session.createSignInSession(loginResponse.getUserName(), loginResponse.getUserEmail(), "GOOGLE");
+                        if (session.getMode().equals("SELLER")) {
+                            Intent sellerMenuActivityIntent = new Intent(getApplicationContext(), SellerMenuActivity.class);
+                            sellerMenuActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(sellerMenuActivityIntent);
+                        } else {
+                            Intent buyerMenuActivityIntent = new Intent(getApplicationContext(), BuyerMenuActivity.class);
+                            buyerMenuActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(buyerMenuActivityIntent);
+                        }
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), loginResponse.getMessage(), Toast.LENGTH_LONG).show();
+                        email.setText("");
+                        password.setText("");
+                        email.requestFocus();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Multipay no ha podido autenticar. Intente nuevamente.", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponseDTO> call, Throwable t) {
+                mConnectionProgressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), "Multipay no ha podido autenticar. Intente nuevamente.", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void facebookTokenInfo(String accessToken) {
+        mConnectionProgressDialog.show();
+        Call<LoginResponseDTO> call = loginService.facebookTokenInfo(accessToken);
+        call.enqueue(new Callback<LoginResponseDTO>() {
+            @Override
+            public void onResponse(Call<LoginResponseDTO> call, Response<LoginResponseDTO> response) {
+                mConnectionProgressDialog.dismiss();
+                setLoginResponse(response.body());
+                Boolean valid;
+                if (loginResponse != null) {
+                    valid = loginResponse.getValid();
+                    if (valid) {
+                        session.createSignInSession(loginResponse.getUserName(), loginResponse.getUserEmail(), "FACEBOOK");
+                        if (session.getMode().equals("SELLER")) {
+                            Intent sellerMenuActivityIntent = new Intent(getApplicationContext(), SellerMenuActivity.class);
+                            sellerMenuActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(sellerMenuActivityIntent);
+                        } else {
+                            Intent buyerMenuActivityIntent = new Intent(getApplicationContext(), BuyerMenuActivity.class);
+                            buyerMenuActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(buyerMenuActivityIntent);
+                        }
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), loginResponse.getMessage(), Toast.LENGTH_LONG).show();
+                        email.setText("");
+                        password.setText("");
+                        email.requestFocus();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Multipay no ha podido autenticar. Intente nuevamente.", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponseDTO> call, Throwable t) {
+                mConnectionProgressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), "Multipay no ha podido autenticar. Intente nuevamente.", Toast.LENGTH_LONG).show();
+            }
+        });
     }
     
     public void launchSignUpActivity(View view) {

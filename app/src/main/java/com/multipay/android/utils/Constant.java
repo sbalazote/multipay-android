@@ -11,4 +11,7 @@ public class Constant {
     public static final String MERCHANT_GET_CUSTOMER_URI = "/api/getCustomer";
     public static final String MERCHANT_CREATE_PAYMENT_URI = "/api/doPayment";
     public static final String MERCHANT_GET_DISCOUNT_URI = "/api/getDiscounts";
+
+    public static final String  GOOGLE_OAUTH_SERVER_CLIENT_ID = "437797444824-6ovnf5l1l1he589sv32tm21qciamiqml.apps.googleusercontent.com";
+
 }

@@ -10,18 +10,16 @@ public class LoginResponseDTO implements Serializable {
 
         private static final long serialVersionUID = 1L;
 
-        //@JsonProperty(value="Valid")
         @SerializedName("Valid")
         private Boolean valid;
-        //@JsonProperty(value="Message")
         @SerializedName("Message")
         private String message;
-        //@JsonProperty(value="UserId")
         @SerializedName("UserId")
         private Integer userId;
-        //@JsonProperty(value="Username")
         @SerializedName("Username")
         private String userName;
+        @SerializedName("UserEmail")
+        private String userEmail;
 
         public Boolean getValid() {
                 return this.valid;
@@ -53,5 +51,13 @@ public class LoginResponseDTO implements Serializable {
 
         public void setUserName(String userName) {
                 this.userName = userName;
+        }
+
+        public String getUserEmail() {
+                return userEmail;
+        }
+
+        public void setUserEmail(String userEmail) {
+                this.userEmail = userEmail;
         }
 }
