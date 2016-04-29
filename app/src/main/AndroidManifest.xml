@@ -24,9 +24,7 @@
         android:name="com.multipay.android.permission.C2D_MESSAGE" />
 
     <!-- This app has permission to register and receive data message. -->
-    <uses-permission
-        android:name="com.google.android.c2dm.permission.RECEIVE" />
-
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
@@ -129,6 +127,11 @@
             android:label="@string/title_activity_sign_up"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.multipay.android.activities.SimpleVaultActivity"
+            android:label="@string/title_activity_simple_vault"
+            android:screenOrientation="portrait" >
         </activity>
 
         <!--

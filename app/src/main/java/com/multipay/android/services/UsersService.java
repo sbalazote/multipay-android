@@ -2,7 +2,9 @@ package com.multipay.android.services;
 
 import com.mercadopago.model.Card;
 import com.mercadopago.model.Customer;
+import com.mercadopago.model.Payment;
 import com.mercadopago.model.Token;
+import com.multipay.android.dtos.PaymentDataDTO;
 
 import org.json.JSONObject;
 
@@ -39,6 +41,19 @@ public interface UsersService {
 	@Headers("Accept: application/json")
     void getUsers(Callback<List<String>> callback);
 
+	@GET("/api/getCustomer")
+	@Headers("Accept: application/json")
+	Call<String> getCustomer(@Query("customerId") String customerId);
+
+	/* Saves a new card to the customer.
+	 */
+	@Headers("Accept: application/json")
+	@POST("/api/customers/{customerId}/cards")
+	Call<Card> AddNewCardToCustomer(@Path("customerId") String customerId, @Body String cardToken);
+
+	@Headers("Accept: application/json")
+	@POST("/api/doPayment")
+	Call<Payment> doPayment(@Body PaymentDataDTO paymentData);
 
 	/*	Looks for customers by many criterias.
 	 */

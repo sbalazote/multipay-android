@@ -1,8 +1,13 @@
 package com.multipay.android.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
@@ -15,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -34,6 +40,7 @@ import com.mercadopago.util.LayoutUtil;
 import com.mercadopago.util.MercadoPagoUtil;
 import com.multipay.android.multipay.R;
 import com.multipay.android.services.UsersService;
+import com.multipay.android.utils.Constant;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,6 +79,7 @@ public class AddCardActivity extends AppCompatActivity {
     private String mExceptionOnMethod;
     private MercadoPago mMercadoPago;
     private String mMerchantPublicKey;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,8 +170,62 @@ public class AddCardActivity extends AppCompatActivity {
 
         if (validateForm(mCardToken)) {
 
-            // Create token
-            createTokenAsync();
+            int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+
+            /*if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+                // Create token
+                createTokenAsync();
+            } else {
+
+            }*/
+            requestPermissions();
+
+
+        }
+    }
+
+    private void requestPermissions() {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay!
+                    createTokenAsync();
+                } else {
+                    // permission denied, boo!
+                    Toast.makeText(AddCardActivity.this, "Se necesita el permiso para poder agregar la tarjeta a MercadoPago", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+            case PackageManager.PERMISSION_DENIED: {
+                Toast.makeText(AddCardActivity.this, "Se necesita el permiso para poder agregar la tarjeta a MercadoPago", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -310,44 +372,14 @@ public class AddCardActivity extends AppCompatActivity {
                 Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
 
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://api.mercadopago.com")
+                        .baseUrl(Constant.MERCHANT_BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create(gson))
                         .client(httpClient.build())
                         .build();
 
                 final UsersService service = retrofit.create(UsersService.class);
 
-                // Grabo la tarjeta al usuario.
-                String jsonObject = "{'token': '" + response.body().getId() + "'}";
-
-                /*Call<List<Card>> call3 = service.retrieveAllCards("211652599-qRKOz5YPnhvZwk", "TEST-3108634673635661-040716-33a906fea1e9862927e85dffed01eaae__LB_LC__-73449193");
-                call3.enqueue(new Callback<List<Card>>() {
-                    @Override
-                    public void onResponse(Call<List<Card>> call, Response<List<Card>> response) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Card>> call, Throwable t) {
-
-                    }
-                });*/
-
-                /*Call<Card> call4 = service.newCard("211652599-qRKOz5YPnhvZwk", "TEST-3108634673635661-040716-33a906fea1e9862927e85dffed01eaae__LB_LC__-73449193", jsonObject);
-                call4.enqueue(new Callback<Card>() {
-                    @Override
-                    public void onResponse(Call<Card> call, Response<Card> response) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Card> call, Throwable t) {
-
-                    }
-                });*/
-
-
-                Call<Card> call4 = service.getCardById("211652599-qRKOz5YPnhvZwk", "1461032414134", "TEST-3108634673635661-040716-33a906fea1e9862927e85dffed01eaae__LB_LC__-73449193");
+                Call<Card> call4 = service.AddNewCardToCustomer("211652599-qRKOz5YPnhvZwk", response.body().getId());
                 call4.enqueue(new Callback<Card>() {
                     @Override
                     public void onResponse(Call<Card> call, Response<Card> response) {

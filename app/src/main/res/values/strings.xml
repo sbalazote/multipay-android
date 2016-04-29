@@ -79,7 +79,8 @@
     <string name="buyer_mode_login">COMPRAR</string>
     
     <string name="document_type_prompt">Seleccione tipo de doc...</string>
-    
+    <string name="title_activity_simple_vault">Pagar</string>
+
     <style name="ButtonText">
     <!-- <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">wrap_content</item> -->

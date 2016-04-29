@@ -89,6 +89,10 @@ public class SessionManager {
 		return sharedPreferences.getString(KEY_USERNAME, null);
 	}
 
+	public String getUsernameEMail() {
+		return sharedPreferences.getString(KEY_USERNAME_EMAIL, null);
+	}
+
 	/**
 	 * Verifico el estado de Logueo. Si no lo esta, redirijo a la pagina de
 	 * seleccion de modo. (SELLER/BUYER)
