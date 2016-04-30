@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +40,7 @@ import com.multipay.android.multipay.R;
 import com.multipay.android.services.LoginService;
 import com.multipay.android.services.UsersService;
 import com.multipay.android.utils.Constant;
+import com.multipay.android.utils.MultipayMenuItems;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -87,6 +91,9 @@ public class SimpleVaultActivity extends AppCompatActivity {
 
 		super.onCreate(savedInstanceState);
 		setContentView();
+
+		Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+		setSupportActionBar(myToolbar);
 
 		// Get activity parameters
 		mMerchantPublicKey = this.getIntent().getStringExtra("merchantPublicKey");
@@ -139,6 +146,33 @@ public class SimpleVaultActivity extends AppCompatActivity {
 			setResult(RESULT_CANCELED, returnIntent);
 			returnIntent.putExtra("message", "Invalid parameters");
 			finish();
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_activity_buyer_signed_in, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.action_about:
+				MultipayMenuItems.openAbout(getApplicationContext());
+				return true;
+			case R.id.action_make_payment:
+				//makePayment(item.getActionView());
+				return true;
+			case R.id.action_logout:
+				finish();
+				//session.logoutUser();
+				return true;
+			case R.id.action_help:
+				MultipayMenuItems.openHelp(getApplicationContext());
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 

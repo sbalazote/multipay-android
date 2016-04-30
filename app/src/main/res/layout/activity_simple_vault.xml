@@ -8,6 +8,15 @@
     <include layout="@layout/view_refresh_layout"/>
     <include layout="@layout/view_progress_bar"/>
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        tools:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
+
     <ScrollView
         android:id="@+id/regularLayout"
         android:layout_width="match_parent"

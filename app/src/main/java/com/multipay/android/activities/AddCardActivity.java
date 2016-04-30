@@ -9,10 +9,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -41,6 +44,7 @@ import com.mercadopago.util.MercadoPagoUtil;
 import com.multipay.android.multipay.R;
 import com.multipay.android.services.UsersService;
 import com.multipay.android.utils.Constant;
+import com.multipay.android.utils.MultipayMenuItems;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -86,6 +90,9 @@ public class AddCardActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_card);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
 
         mActivity = this;
 
@@ -140,6 +147,33 @@ public class AddCardActivity extends AppCompatActivity {
 
         // Get identification types
         getIdentificationTypesAsync();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_activity_buyer_signed_in, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                MultipayMenuItems.openAbout(getApplicationContext());
+                return true;
+            case R.id.action_make_payment:
+                //makePayment(item.getActionView());
+                return true;
+            case R.id.action_logout:
+                finish();
+                //session.logoutUser();
+                return true;
+            case R.id.action_help:
+                MultipayMenuItems.openHelp(getApplicationContext());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
