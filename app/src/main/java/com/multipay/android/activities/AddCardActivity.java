@@ -46,9 +46,6 @@ import com.multipay.android.services.UsersService;
 import com.multipay.android.utils.Constant;
 import com.multipay.android.utils.MultipayMenuItems;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -87,7 +84,6 @@ public class AddCardActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_card);
 

@@ -20,6 +20,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginBottom="@dimen/mpsdk_margin_std"
+        android:layout_below="@+id/my_toolbar"
         android:id="@+id/regularLayout">
 
         <LinearLayout

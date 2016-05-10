@@ -1,39 +1,28 @@
 package com.multipay.android.activities;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.multipay.android.multipay.R;
 import com.multipay.android.helpers.SessionManager;
-import com.multipay.android.services.UsersService;
+import com.multipay.android.multipay.R;
 import com.multipay.android.tasks.LoadImages;
 import com.multipay.android.utils.Constant;
 import com.multipay.android.utils.ItemCategories;
@@ -41,9 +30,10 @@ import com.multipay.android.utils.ItemCategories.ItemCategory;
 import com.multipay.android.utils.MultipayMenuItems;
 import com.multipay.android.utils.PaymentMethods;
 
-import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MakePaymentActivity extends AppCompatActivity implements OnItemSelectedListener {
 	private Spinner paymentMethodsSpinner;
@@ -107,7 +97,25 @@ public class MakePaymentActivity extends AppCompatActivity implements OnItemSele
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_activity_seller_signed_in, menu);
-		return true;
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.action_about:
+				MultipayMenuItems.openAbout(getApplicationContext());
+				return true;
+			case R.id.action_logout:
+				finish();
+				session.logoutUser();
+				return true;
+			case R.id.action_help:
+				MultipayMenuItems.openHelp(getApplicationContext());
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 
 	private void authorizeMultipay() {
@@ -200,25 +208,7 @@ public class MakePaymentActivity extends AppCompatActivity implements OnItemSele
 		startActivity(paymentLinkBeamActivityIntent);
 	}
 
-	@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_about:
-            	MultipayMenuItems.openAbout(getApplicationContext());
-            	return true;
-            case R.id.action_logout:
-            	finish();
-            	session.logoutUser();
-                return true;
-            case R.id.action_help:
-            	MultipayMenuItems.openHelp(getApplicationContext());
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-	
-	public void onItemSelected(AdapterView<?> parent, View view, 
+	public void onItemSelected(AdapterView<?> parent, View view,
             int pos, long id) {
         // An item was selected. You can retrieve the selected item using
         // parent.getItemAtPosition(pos)

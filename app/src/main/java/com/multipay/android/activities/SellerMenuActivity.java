@@ -2,7 +2,6 @@ package com.multipay.android.activities;
 
 import java.io.InputStream;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -65,12 +64,6 @@ public class SellerMenuActivity extends AppCompatActivity {
 		profileUsername = (TextView) findViewById(R.id.profile_username);
 		
 		current_promos = (WebView) findViewById(R.id.current_promos_webView);
-		WebSettings webSettings = current_promos.getSettings();
-		webSettings.setBuiltInZoomControls(true);
-		webSettings.setLoadWithOverviewMode(true);
-		webSettings.setUseWideViewPort(true);
-		current_promos.loadUrl("https://www.mercadopago.com/mla/credit_card_promos.htm");
-		current_promos.setVisibility(View.GONE);
 
 		// Get the user's data.
 		if (signInType.equals("FACEBOOK")) {
@@ -156,34 +149,11 @@ public class SellerMenuActivity extends AppCompatActivity {
  
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
-            //bitmap = result;
         }
     }
     
     private void makeMeRequest() {
-		/*Session session = Session.getActiveSession();
-		// Make an API call to get user data and define a 
-		// new callback to handle the response.
-		Request request = Request.newMeRequest(session, 
-				new Request.GraphUserCallback() {
-			@Override
-			public void onCompleted(GraphUser user, Response response) {
-				// If the response is successful
-				if (user != null) {
-					// Set the id for the ProfilePictureView
-					// view that in turn displays the profile picture.
-					facebookProfilePicture.setProfileId(user.getId());
-					// Set the Textview's text to the user's name.
-					//userNameView.setText(user.getName());
-				}
-
-				if (response.getError() != null) {
-					// Handle errors, will do so later.
-				}
-			}
-		});*/
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
-		// LLamada a la API para obtener informacion del usuario y defino un callback para manejar la respuesta.
 		GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
 			@Override
 			public void onCompleted(JSONObject user, GraphResponse response) {
@@ -206,11 +176,16 @@ public class SellerMenuActivity extends AppCompatActivity {
 		Intent paymentHistoryIntent = new Intent(this, PaymentHistoryActivity.class);
     	startActivity(paymentHistoryIntent);
 	}
-	
+
 	public void viewPromos(View view) {
+		WebSettings webSettings = current_promos.getSettings();
+		webSettings.setBuiltInZoomControls(true);
+		webSettings.setLoadWithOverviewMode(true);
+		webSettings.setUseWideViewPort(true);
+		current_promos.loadUrl("https://www.mercadopago.com/mla/credit_card_promos.htm");
 		current_promos.setVisibility(View.VISIBLE);
 	}
-	
+
 	public void makePayment(View view) {
 		Intent makePaymentIntent = new Intent(this, MakePaymentActivity.class);
     	startActivity(makePaymentIntent);

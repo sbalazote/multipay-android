@@ -103,7 +103,7 @@ public class BuyerMenuActivity extends AppCompatActivity {
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	getMenuInflater().inflate(R.menu.menu_activity_buyer_signed_in, menu);
-    	    return super.onCreateOptionsMenu(menu);
+		return super.onCreateOptionsMenu(menu);
     }
  
     @Override

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -158,19 +159,24 @@ public class SignUpActivity extends AppCompatActivity implements OnItemSelectedL
         String userPassword = this.password.getText().toString();
         View focusView = null;
 
-        // Se validan los campos obligatorios
+        // Se validan los campos.
         if (TextUtils.isEmpty(userEmail)) {
-                this.email.setError("El campo email es obligatorio.");
-                focusView = this.email;
-                cancel = true;
+			this.email.setError("El campo email es obligatorio.");
+			focusView = this.email;
+			cancel = true;
         }
+		if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+			this.email.setError("El campo email no es valido.");
+			focusView = this.email;
+			cancel = true;
+		}
         if (TextUtils.isEmpty(userName)) {
             this.name.setError("El campo nombre es obligatorio.");
             focusView = this.name;
             cancel = true;
         }
         if (TextUtils.isEmpty(userPassword)) {
-            this.password.setError("El campo contrase�a es obligatorio.");
+            this.password.setError("El campo contraseniaa es obligatorio.");
             focusView = this.password;
             cancel = true;
         }
