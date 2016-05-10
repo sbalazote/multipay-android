@@ -70,7 +70,8 @@ public class SellerMenuActivity extends AppCompatActivity {
 		webSettings.setLoadWithOverviewMode(true);
 		webSettings.setUseWideViewPort(true);
 		current_promos.loadUrl("https://www.mercadopago.com/mla/credit_card_promos.htm");
-		
+		current_promos.setVisibility(View.GONE);
+
 		// Get the user's data.
 		if (signInType.equals("FACEBOOK")) {
 			socialLogo.setImageResource(R.drawable.facebook_logo__blue);

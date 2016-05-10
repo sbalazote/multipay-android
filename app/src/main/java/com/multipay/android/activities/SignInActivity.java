@@ -14,6 +14,9 @@ import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.multipay.android.dtos.LoginRequestDTO;
 import com.multipay.android.dtos.LoginResponseDTO;
 import com.multipay.android.helpers.SessionManager;
@@ -51,7 +54,6 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
     private String mobileId;
     private LoginResponseDTO loginResponse;
 
-    private Retrofit retrofit;
     private LoginService loginService;
 
     @Override
@@ -63,9 +65,11 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(logging);
 
-        retrofit = new Retrofit.Builder()
+        Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
+
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constant.MERCHANT_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(httpClient.build())
                 .build();
         loginService = retrofit.create(LoginService.class);
@@ -77,7 +81,7 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
         
     	session = SessionManager.getInstance(this.getApplicationContext());
         mobileId = Device.getDevice(getApplicationContext()).getMACAddress();
-        
+
         facebookSignInUtils = new FacebookSignInUtils(this);
         facebookSignInUtils.setFacebookSignInStatus(this);
         facebookSignInUtils.setEnable(true);
@@ -180,6 +184,8 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
         userLogin.setUserEmail(userEmail);
         userLogin.setUserPassword(userPassword);
         userLogin.setMobileId(this.mobileId);
+        userLogin.setRegistrationId(session.retrieveRegistrationId());
+        userLogin.setSeller(session.getMode().equals("SELLER"));
         mConnectionProgressDialog.show();
         Call<LoginResponseDTO> call = loginService.attemptNativeLogin(userLogin);
         call.enqueue(new Callback<LoginResponseDTO>() {
@@ -222,8 +228,13 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
     }
 
     private void googleTokenInfo(String tokenId) {
+        LoginRequestDTO userLogin = new LoginRequestDTO();
+        userLogin.setSocialToken(tokenId);
+        userLogin.setMobileId(this.mobileId);
+        userLogin.setRegistrationId(session.retrieveRegistrationId());
+        userLogin.setSeller(session.getMode().equals("SELLER"));
         mConnectionProgressDialog.show();
-        Call<LoginResponseDTO> call = loginService.googleTokenInfo(tokenId);
+        Call<LoginResponseDTO> call = loginService.googleTokenInfo(userLogin);
         call.enqueue(new Callback<LoginResponseDTO>() {
             @Override
             public void onResponse(Call<LoginResponseDTO> call, Response<LoginResponseDTO> response) {
@@ -264,8 +275,13 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
     }
 
     private void facebookTokenInfo(String accessToken) {
+        LoginRequestDTO userLogin = new LoginRequestDTO();
+        userLogin.setSocialToken(accessToken);
+        userLogin.setMobileId(this.mobileId);
+        userLogin.setRegistrationId(session.retrieveRegistrationId());
+        userLogin.setSeller(session.getMode().equals("SELLER"));
         mConnectionProgressDialog.show();
-        Call<LoginResponseDTO> call = loginService.facebookTokenInfo(accessToken);
+        Call<LoginResponseDTO> call = loginService.facebookTokenInfo(userLogin);
         call.enqueue(new Callback<LoginResponseDTO>() {
             @Override
             public void onResponse(Call<LoginResponseDTO> call, Response<LoginResponseDTO> response) {

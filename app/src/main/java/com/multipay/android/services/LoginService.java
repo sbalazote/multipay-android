@@ -22,9 +22,9 @@ public interface LoginService {
 
     @POST("/api/googleTokenInfo")
     @Headers("Accept: application/json")
-    Call<LoginResponseDTO> googleTokenInfo(@Body String tokenId);
+    Call<LoginResponseDTO> googleTokenInfo(@Body LoginRequestDTO loginRequestDTO);
 
     @POST("/api/facebookTokenInfo")
     @Headers("Accept: application/json")
-    Call<LoginResponseDTO> facebookTokenInfo(@Body String accessToken);
+    Call<LoginResponseDTO> facebookTokenInfo(@Body LoginRequestDTO loginRequestDTO);
 }

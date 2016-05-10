@@ -6,32 +6,44 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.multipay.android.multipay.R;
 import com.multipay.android.helpers.SessionManager;
+import com.multipay.android.services.UsersService;
 import com.multipay.android.tasks.LoadImages;
+import com.multipay.android.utils.Constant;
 import com.multipay.android.utils.ItemCategories;
 import com.multipay.android.utils.ItemCategories.ItemCategory;
 import com.multipay.android.utils.MultipayMenuItems;
 import com.multipay.android.utils.PaymentMethods;
+
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MakePaymentActivity extends AppCompatActivity implements OnItemSelectedListener {
 	private Spinner paymentMethodsSpinner;
@@ -97,6 +109,60 @@ public class MakePaymentActivity extends AppCompatActivity implements OnItemSele
 		getMenuInflater().inflate(R.menu.menu_activity_seller_signed_in, menu);
 		return true;
 	}
+
+	private void authorizeMultipay() {
+		final Dialog auth_dialog = new Dialog(MakePaymentActivity.this);
+		auth_dialog.setContentView(R.layout.auth_screen);
+
+		SessionManager sessionManager = SessionManager.getInstance(this.getApplicationContext());
+
+		WebView web = (WebView) auth_dialog.findViewById(R.id.authWebView);
+		web.getSettings().setJavaScriptEnabled(true);
+		web.loadUrl(Constant.OAUTH_URL + "?client_id=" + Constant.CLIENT_ID + "&response_type=code&platform_id=mp&redirect_uri=" + Constant.REDIRECT_URI + "?email=" + sessionManager.getUsernameEMail());
+		/*web.setWebViewClient(new WebViewClient() {
+
+			boolean authComplete = false;
+			Intent resultIntent = new Intent();
+
+			@Override
+			public void onPageStarted(WebView view, String url, Bitmap favicon) {
+				super.onPageStarted(view, url, favicon);
+			}
+
+			String authCode;
+
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				super.onPageFinished(view, url);
+
+				if (url.contains("?code=") && !authComplete) {
+					Uri uri = Uri.parse(url);
+					authCode = uri.getQueryParameter("code");
+					Log.i("", "CODE : " + authCode);
+					authComplete = true;
+					resultIntent.putExtra("code", authCode);
+					MakePaymentActivity.this.setResult(Activity.RESULT_OK, resultIntent);
+					setResult(Activity.RESULT_CANCELED, resultIntent);
+
+					auth_dialog.dismiss();
+					Toast.makeText(getApplicationContext(), "El AuthCode MP es: " + authCode, Toast.LENGTH_SHORT)
+							.show();
+
+				} else if (url.contains("error=access_denied")) {
+					Log.i("", "ACCESS_DENIED_HERE");
+					resultIntent.putExtra("code", authCode);
+					authComplete = true;
+					setResult(Activity.RESULT_CANCELED, resultIntent);
+					Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_SHORT).show();
+
+					auth_dialog.dismiss();
+				}
+			}
+		});*/
+		auth_dialog.show();
+		auth_dialog.setTitle("Autorizar MultiPay");
+		auth_dialog.setCancelable(true);
+	}
 	
 	public class MyAdapter extends ArrayAdapter<String>{
 		 
@@ -129,6 +195,7 @@ public class MakePaymentActivity extends AppCompatActivity implements OnItemSele
         }
 	
 	public void sendPaymentLink(View view) {
+		authorizeMultipay();
 		Intent paymentLinkBeamActivityIntent = new Intent(this, PaymentLinkBeamActivity.class);
 		startActivity(paymentLinkBeamActivityIntent);
 	}

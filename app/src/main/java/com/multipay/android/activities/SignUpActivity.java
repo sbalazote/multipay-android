@@ -1,20 +1,14 @@
 package com.multipay.android.activities;
 
-import android.app.Activity;
-import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -26,41 +20,24 @@ import android.widget.Toast;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mercadopago.model.Customer;
-import com.multipay.android.multipay.R;
+import com.multipay.android.dtos.LoginResponseDTO;
+import com.multipay.android.dtos.RegistrationRequestDTO;
 import com.multipay.android.helpers.SessionManager;
-import com.multipay.android.services.UsersService;
+import com.multipay.android.multipay.R;
+import com.multipay.android.services.RegistrationService;
+import com.multipay.android.utils.Constant;
+import com.multipay.android.utils.Device;
 import com.multipay.android.utils.MultipayMenuItems;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignUpActivity extends AppCompatActivity implements OnItemSelectedListener {
-	private static String CLIENT_ID = "3108634673635661";
-    private static String REDIRECT_URI = "http://multipay.ddns.net:8080/api/authorization";
-    private static String OAUTH_URL ="https://auth.mercadolibre.com.ar/authorization";
-
-	/*
-	 * LOCALHOST_EMULATOR_BASE_URL
-	 * 
-	 * La URL 10.0.2.2 es la direccion que utiliza el emulador para referirse al
-	 * 'localhost' de la maquina que hace de host. El puerto 5050 lo usa la
-	 * aplicacion SharpProxy para poder acceder a la instancia local del IIS
-	 * dentro del Visual Studio.
-	 */ 
-	private static final String LOCALHOST_EMULATOR_BASE_URL = "http://10.0.2.2:5000";
-	/*
-	 * LOCALHOST_DEVICE_BASE_URL
-	 * 
-	 * La URL es la direccion privada 'localhost' de la maquina que hace de
-	 * host. El puerto 5050 lo usa la aplicacion SharpProxy para poder acceder a
-	 * la instancia local del IIS dentro del Visual Studio.
-	 */
-	private static final String LOCALHOST_DEVICE_BASE_URL = "http://192.168.1.127:5000";
-	private static final String DEBUG_BASE_URL = "http://multipay.ddns.net:8080";
-	//private static final String RELEASE_BASE_URL = "";
-	private final Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
 
 	private EditText email;
 	private EditText password;
@@ -77,13 +54,38 @@ public class SignUpActivity extends AppCompatActivity implements OnItemSelectedL
 	private EditText areaCode;
 	private EditText phoneNumber;
 	private boolean isSeller;
-	
+	private RegistrationService registrationService;
+
+	private ProgressDialog mConnectionProgressDialog;
+
+	private SessionManager session;
+	private String mobileId;
+
+	private LoginResponseDTO loginResponse;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sign_up);
 		Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
 		setSupportActionBar(myToolbar);
+
+		session = SessionManager.getInstance(this.getApplicationContext());
+		mobileId = Device.getDevice(getApplicationContext()).getMACAddress();
+
+		HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+		logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+		OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+		httpClient.addInterceptor(logging);
+
+		Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
+
+		Retrofit retrofit = new Retrofit.Builder()
+				.baseUrl(Constant.MERCHANT_BASE_URL)
+				.addConverterFactory(GsonConverterFactory.create(gson))
+				.client(httpClient.build())
+				.build();
+		registrationService = retrofit.create(RegistrationService.class);
 		
 		email = (EditText) findViewById(R.id.email_input);
         password = (EditText) findViewById(R.id.password_input);
@@ -108,7 +110,7 @@ public class SignUpActivity extends AppCompatActivity implements OnItemSelectedL
         areaCode = (EditText) findViewById(R.id.area_code);
         phoneNumber = (EditText) findViewById(R.id.phone_number);
         
-        isSeller = SessionManager.getInstance(getApplicationContext()).getMode().equals("SELLER") ? true : false;
+        isSeller = SessionManager.getInstance(getApplicationContext()).getMode().equals("SELLER");
         
         if (isSeller) {
         	surname.setVisibility(View.GONE);
@@ -116,67 +118,9 @@ public class SignUpActivity extends AppCompatActivity implements OnItemSelectedL
         	addressLayout.setVisibility(View.GONE);
         	phoneLayout.setVisibility(View.GONE);
         }
-        
-		
-		//MercadoPago m = new MercadoPago("", SignUpActivity.this);
-		//m.getPreferenceAttributes();
-		//m.createSellerToken();
-		//m.createToken();
-		//m.authorize();
-		
-		//FragmentTransaction ft =  getFragmentManager().beginTransaction();
-	    //ft.addToBackStack(null);
-	 
-	    // Create and show the dialog.
-		//showDialog();
-	    //AuthorizationFragment newFragment = new AuthorizationFragment();
-	    //ft.add(R.id.checkout, newFragment);
-	    //ft.commit();
-	    //ft.show(newFragment);
-	    //newFragment.getView(ft, "dialog");
-		
-		/*checkout = (WebView) findViewById(R.id.checkout);
-		WebSettings webSettings = checkout.getSettings();
-		webSettings.setBuiltInZoomControls(true);
-		webSettings.setLoadWithOverviewMode(true);
-		webSettings.setUseWideViewPort(true);
-		checkout.loadUrl("https://auth.mercadolibre.com.ar/authorization?client_id=3108634673635661&response_type=code&platform_id=mp&redirect_uri=http://multipay.ddns.net:8080/api/authorization?email=pepe@gmail.com");
-		
-		Callback<PreferenceResponse> callback = new Callback<PreferenceResponse>() {
-			@Override
-			public void success(PreferenceResponse o, Response response) {
-				checkout = (WebView) findViewById(R.id.checkout);
-				WebSettings webSettings = checkout.getSettings();
-				webSettings.setBuiltInZoomControls(true);
-				webSettings.setLoadWithOverviewMode(true);
-				webSettings.setUseWideViewPort(true);
-				checkout.loadUrl(o.getSandbox_init_point());
-			}
 
-			@Override
-			public void failure(RetrofitError arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-	    };
-	    String preferenceData = "{"
-	    		+ "'items':"+
-				"[{"+
-					"'id': 'C�digo',"+
-					"'title':'Multicolor kite',"+
-					"'quantity':1,"+
-					"'currency_id':'ARS',"+
-					"'unit_price':10.0,"+
-					"'category_id':'home',"+
-					"'picture_url': 'http://i.imgur.com/4kBGegf.png'"+
-				"}],"+
-				"'marketplace_fee': 2.29"+
-			"}";
-	    JSONObject preferenceJSON = null;
-	    TypedString in = new TypedString(preferenceData);*/
-	   
-	    //m.createPreference("APP_USR-8989156561599790-033007-5cf76210a8b1827641cdcab1e823765d__B_E__-73449193", in, callback);
-	    //m.createPreference("APP_USR-3108634673635661-041402-4aab007397a20bdc7ee33815eecbf4fd__G_M__-73449193", in, callback);
+		mConnectionProgressDialog = new ProgressDialog(this);
+		mConnectionProgressDialog.setMessage("Registrandose...\nEspere un momento, por favor.");
 	}
 
 	@Override
@@ -202,8 +146,11 @@ public class SignUpActivity extends AppCompatActivity implements OnItemSelectedL
                 return super.onOptionsItemSelected(item);
         }
     }
-    
-    // TODO consultar la db para alta nuevo usuario.
+
+	private void setLoginResponse(LoginResponseDTO loginResponse) {
+		this.loginResponse = loginResponse;
+	}
+
 	public void signUp(View view) {
 		Boolean cancel = false;
         String userEmail = this.email.getText().toString();
@@ -229,83 +176,68 @@ public class SignUpActivity extends AppCompatActivity implements OnItemSelectedL
         }
 
 		if (!cancel) {
-			// TODO autenticarse en MP
-			final Dialog auth_dialog = new Dialog(SignUpActivity.this);
-			auth_dialog.setContentView(R.layout.auth_screen);
-
-			WebView web = (WebView) auth_dialog.findViewById(R.id.authWebView);
-			web.getSettings().setJavaScriptEnabled(true);
-			web.loadUrl(OAUTH_URL + "?client_id=" + CLIENT_ID + "&response_type=code&platform_id=mp&redirect_uri="
-					+ REDIRECT_URI);
-			web.setWebViewClient(new WebViewClient() {
-
-				boolean authComplete = false;
-				Intent resultIntent = new Intent();
-
+			RegistrationRequestDTO registrationRequestDTO = new RegistrationRequestDTO();
+			registrationRequestDTO.setMobileId(this.mobileId);
+			registrationRequestDTO.setRegistrationId(session.retrieveRegistrationId());
+			registrationRequestDTO.setEmail(userEmail);
+			registrationRequestDTO.setName(userName);
+			registrationRequestDTO.setLastName(surname.getText().toString());
+			registrationRequestDTO.setPassword(userPassword);
+			registrationRequestDTO.setIdentificationType(documentType.getSelectedItem().toString());
+			registrationRequestDTO.setIdentificationNumber(documentNumber.getText().toString());
+			registrationRequestDTO.setAddressName(streetName.getText().toString());
+			if (!streetNumber.getText().toString().isEmpty()) {
+				registrationRequestDTO.setAddressNumber(Integer.parseInt(streetNumber.getText().toString()));
+			}
+			if (!zipCode.getText().toString().isEmpty()) {
+				registrationRequestDTO.setAddressZipCode(zipCode.getText().toString());
+			}
+			if (!areaCode.getText().toString().isEmpty()) {
+				registrationRequestDTO.setPhoneAreaCode(Integer.parseInt(areaCode.getText().toString()));
+			}
+			if (!phoneNumber.getText().toString().isEmpty()) {
+				registrationRequestDTO.setPhoneNumber(phoneNumber.getText().toString());
+			}
+			registrationRequestDTO.setSeller(isSeller);
+			mConnectionProgressDialog.show();
+			Call<LoginResponseDTO> call = registrationService.attemptNativeRegistration(registrationRequestDTO);
+			call.enqueue(new Callback<LoginResponseDTO>() {
 				@Override
-				public void onPageStarted(WebView view, String url, Bitmap favicon) {
-					super.onPageStarted(view, url, favicon);
-				}
-
-				String authCode;
-
-				@Override
-				public void onPageFinished(WebView view, String url) {
-					super.onPageFinished(view, url);
-
-					if (url.contains("?code=") && authComplete != true) {
-						Uri uri = Uri.parse(url);
-						authCode = uri.getQueryParameter("code");
-						Log.i("", "CODE : " + authCode);
-						authComplete = true;
-						resultIntent.putExtra("code", authCode);
-						SignUpActivity.this.setResult(Activity.RESULT_OK, resultIntent);
-						setResult(Activity.RESULT_CANCELED, resultIntent);
-
-						//SharedPreferences.Editor edit = pref.edit();
-						//edit.putString("Code", authCode);
-						//edit.commit();
-						auth_dialog.dismiss();
-						//new TokenGet().execute();
-						Toast.makeText(getApplicationContext(), "El AuthCode MP es: " + authCode, Toast.LENGTH_SHORT)
-								.show();
-						
-						// TODO registrarse en la db
-						Retrofit retrofit = new Retrofit.Builder()
-								.baseUrl("https://api.mercadopago.com")
-								.addConverterFactory(GsonConverterFactory.create())
-								.build();
-
-						UsersService service = retrofit.create(UsersService.class);
-
-						Call<String> call = service.addSeller("dad@dad.com", "pepe", "2015-05-05", "sarasa", true, "ADADQEFCBR23423", null);
-						call.enqueue(new retrofit2.Callback<String>() {
-							@Override
-							public void onResponse(Call<String> call, retrofit2.Response<String> response) {
-
+				public void onResponse(Call<LoginResponseDTO> call, Response<LoginResponseDTO> response) {
+					mConnectionProgressDialog.dismiss();
+					setLoginResponse(response.body());
+					Boolean valid;
+					if (loginResponse != null) {
+						valid = loginResponse.getValid();
+						if (valid) {
+							session.createSignInSession(loginResponse.getUserName(), loginResponse.getUserEmail(), "NATIVE");
+							if (session.getMode().equals("SELLER")) {
+								Intent sellerMenuActivityIntent = new Intent(getApplicationContext(), SellerMenuActivity.class);
+								sellerMenuActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+								startActivity(sellerMenuActivityIntent);
+							} else {
+								Intent buyerMenuActivityIntent = new Intent(getApplicationContext(), BuyerMenuActivity.class);
+								buyerMenuActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+								startActivity(buyerMenuActivityIntent);
 							}
-
-							@Override
-							public void onFailure(Call<String> call, Throwable t) {
-
-							}
-						});
-						//usersService.getUsers(callback);
-					} else if (url.contains("error=access_denied")) {
-						Log.i("", "ACCESS_DENIED_HERE");
-						resultIntent.putExtra("code", authCode);
-						authComplete = true;
-						setResult(Activity.RESULT_CANCELED, resultIntent);
-						Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_SHORT).show();
-
-						auth_dialog.dismiss();
+							finish();
+						} else {
+							Toast.makeText(getApplicationContext(), loginResponse.getMessage(), Toast.LENGTH_LONG).show();
+							email.setText("");
+							password.setText("");
+							email.requestFocus();
+						}
+					} else {
+						Toast.makeText(getApplicationContext(), "Multipay no ha podido registrar. Intente nuevamente.", Toast.LENGTH_LONG).show();
 					}
 				}
-			});
-			auth_dialog.show();
-			auth_dialog.setTitle("Autorizar MultiPay");
-			auth_dialog.setCancelable(true);
 
+				@Override
+				public void onFailure(Call<LoginResponseDTO> call, Throwable t) {
+					mConnectionProgressDialog.dismiss();
+					Toast.makeText(getApplicationContext(), "Multipay no ha podido registrar. Intente nuevamente.", Toast.LENGTH_LONG).show();
+				}
+			});
 		} else {
 			// Se devuelve el foco al campo que no fue completado.
 			focusView.requestFocus();
