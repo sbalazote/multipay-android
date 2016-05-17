@@ -36,6 +36,7 @@ import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
 import com.mercadopago.util.MercadoPagoUtil;
 import com.multipay.android.dtos.LoginResponseDTO;
+import com.multipay.android.helpers.SessionManager;
 import com.multipay.android.multipay.R;
 import com.multipay.android.services.LoginService;
 import com.multipay.android.services.UsersService;
@@ -60,6 +61,7 @@ public class SimpleVaultActivity extends AppCompatActivity {
 	protected String mMerchantBaseUrl;
 	protected String mMerchantGetCustomerUri;
 	protected String mMerchantPublicKey;
+	protected boolean mShowBankDeals;
 
 	// Input controls
 	protected View mSecurityCodeCard;
@@ -85,6 +87,7 @@ public class SimpleVaultActivity extends AppCompatActivity {
 
 	private Retrofit retrofit;
 	private UsersService usersService;
+	private SessionManager session;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +95,21 @@ public class SimpleVaultActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView();
 
-		Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-		setSupportActionBar(myToolbar);
+		session = SessionManager.getInstance(this.getApplicationContext());
+
+		HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+		logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+		OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+		httpClient.addInterceptor(logging);
+
+		Gson gson1 = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
+
+		retrofit = new Retrofit.Builder()
+				.baseUrl(Constant.MERCHANT_BASE_URL)
+				.addConverterFactory(GsonConverterFactory.create(gson1))
+				.client(httpClient.build())
+				.build();
+		usersService = retrofit.create(UsersService.class);
 
 		// Get activity parameters
 		mMerchantPublicKey = this.getIntent().getStringExtra("merchantPublicKey");
@@ -105,6 +121,7 @@ public class SimpleVaultActivity extends AppCompatActivity {
 			Type listType = new TypeToken<List<String>>(){}.getType();
 			mSupportedPaymentTypes = gson.fromJson(this.getIntent().getStringExtra("supportedPaymentTypes"), listType);
 		}
+		mShowBankDeals = this.getIntent().getBooleanExtra("showBankDeals", true);
 
 		if ((mMerchantPublicKey != null) && (!mMerchantPublicKey.equals(""))) {
 
@@ -151,29 +168,20 @@ public class SimpleVaultActivity extends AppCompatActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.menu_activity_buyer_signed_in, menu);
+		if (mShowBankDeals) {
+			getMenuInflater().inflate(com.mercadopago.R.menu.vault, menu);
+		}
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.action_about:
-				MultipayMenuItems.openAbout(getApplicationContext());
-				return true;
-			case R.id.action_make_payment:
-				//makePayment(item.getActionView());
-				return true;
-			case R.id.action_logout:
-				finish();
-				//session.logoutUser();
-				return true;
-			case R.id.action_help:
-				MultipayMenuItems.openHelp(getApplicationContext());
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
+		if (item.getItemId() == com.mercadopago.R.id.action_bank_deals) {
+			startBankDealsActivity();
+		} else {
+			return super.onOptionsItemSelected(item);
 		}
+		return true;
 	}
 
 	@Override
@@ -238,6 +246,9 @@ public class SimpleVaultActivity extends AppCompatActivity {
 	protected void setContentView() {
 
 		setContentView(R.layout.activity_simple_vault);
+
+		Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+		setSupportActionBar(myToolbar);
 	}
 
 	protected void resolveCustomerCardsRequest(int resultCode, Intent data) {
@@ -328,32 +339,23 @@ public class SimpleVaultActivity extends AppCompatActivity {
 
 		LayoutUtil.showProgressLayout(mActivity);
 		//ErrorHandlingCallAdapter.MyCall<Customer> call = MerchantServer.getCustomer(this, mMerchantBaseUrl, mMerchantGetCustomerUri, mMerchantAccessToken);
-		HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-		logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-		OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-		httpClient.addInterceptor(logging);
-
-		retrofit = new Retrofit.Builder()
-				.baseUrl(Constant.MERCHANT_BASE_URL)
-				.addConverterFactory(GsonConverterFactory.create())
-				.client(httpClient.build())
-				.build();
-		usersService = retrofit.create(UsersService.class);
-		Call<String> call = usersService.getCustomer("211652599-qRKOz5YPnhvZwk");
-		call.enqueue(new Callback<String>() {
+		String buyerEmail = "test_payer_12345789@testuser.com";
+		String sellerEmail = "test_user_88250708@testuser.com";
+		Call<Customer> call = usersService.getCustomer(sellerEmail, buyerEmail);
+		call.enqueue(new Callback<Customer>() {
 			@Override
-			public void onResponse(Call<String> call, Response<String> response) {
-				Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
-				mCards = gson.fromJson(response.body(), Customer.class).getCards();
+			public void onResponse(Call<Customer> call, Response<Customer> response) {
+				mCards = response.body().getCards();
 				LayoutUtil.showRegularLayout(mActivity);
 			}
 
 			@Override
-			public void onFailure(Call<String> call, Throwable t) {
+			public void onFailure(Call<Customer> call, Throwable t) {
 				mExceptionOnMethod = "getCustomerCardsAsync";
-				ApiUtil.finishWithApiException(mActivity, new ApiException());
+				//ApiUtil.finishWithApiException(mActivity, apiException);
 			}
 		});
+
 
 		/*call.enqueue(new ErrorHandlingCallAdapter.MyCallback<Customer>() {
 			@Override
@@ -531,6 +533,14 @@ public class SimpleVaultActivity extends AppCompatActivity {
 		finish();
 	}
 
+	protected void startBankDealsActivity() {
+
+		new MercadoPago.StartActivityBuilder()
+				.setActivity(this)
+				.setPublicKey(mMerchantPublicKey)
+				.startBankDealsActivity();
+	}
+
 	protected void startNewCardActivity() {
 
 		new MercadoPago.StartActivityBuilder()
@@ -547,6 +557,7 @@ public class SimpleVaultActivity extends AppCompatActivity {
 				.setActivity(mActivity)
 				.setPublicKey(mMerchantPublicKey)
 				.setSupportedPaymentTypes(mSupportedPaymentTypes)
+				.setShowBankDeals(mShowBankDeals)
 				.startPaymentMethodsActivity();
 	}
 }

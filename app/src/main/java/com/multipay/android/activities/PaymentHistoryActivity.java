@@ -10,7 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.adapters.ErrorHandlingCallAdapter;
 import com.mercadopago.core.MercadoPago;
@@ -54,8 +56,8 @@ public class PaymentHistoryActivity extends AppCompatActivity {
 
 	protected List<String> mSupportedPaymentTypes = new ArrayList<String>(){{
 		add("credit_card");
-		add("debit_card");
-		add("prepaid_card");
+		/*add("debit_card");
+		add("prepaid_card");*/
 	}};
 
 
@@ -71,12 +73,11 @@ public class PaymentHistoryActivity extends AppCompatActivity {
 		ab.setDisplayHomeAsUpEnabled(true);
 		session = SessionManager.getInstance(this.getApplicationContext());
 
-		session.getUsernameEMail();
 		Intent simpleVaultIntent = new Intent(this, SimpleVaultActivity.class);
 		simpleVaultIntent.putExtra("merchantPublicKey", Constant.MERCHANT_PUBLIC_KEY);
 		simpleVaultIntent.putExtra("merchantBaseUrl", Constant.MERCHANT_BASE_URL);
 		simpleVaultIntent.putExtra("merchantGetCustomerUri", Constant.MERCHANT_GET_CUSTOMER_URI);
-		simpleVaultIntent.putExtra("merchantAccessToken", "211652599-qRKOz5YPnhvZwk");
+		simpleVaultIntent.putExtra("merchantAccessToken", "winning.com@gmail.com");
 		putListExtra(simpleVaultIntent, "supportedPaymentTypes", mSupportedPaymentTypes);
 		startActivityForResult(simpleVaultIntent, SIMPLE_VAULT_REQUEST_CODE);
 	}
@@ -96,8 +97,10 @@ public class PaymentHistoryActivity extends AppCompatActivity {
 			// Set campaign id
 			Long campaignId = (discount != null) ? discount.getId() : null;
 
+			String merchantAccessToken = session.getUsernameEMail();
+
 			// Set merchant payment
-			MerchantPayment payment = new MerchantPayment(item, installments, cardIssuerId, token, paymentMethodId, campaignId, "211652599-qRKOz5YPnhvZwk");
+			MerchantPayment payment = new MerchantPayment(item, installments, cardIssuerId, token, paymentMethodId, campaignId, merchantAccessToken);
 
 			// Create payment
 			HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -105,13 +108,17 @@ public class PaymentHistoryActivity extends AppCompatActivity {
 			OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 			httpClient.addInterceptor(logging);
 
+			Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
+
 			retrofit = new Retrofit.Builder()
 					.baseUrl(Constant.MERCHANT_BASE_URL)
-					.addConverterFactory(GsonConverterFactory.create())
+					.addConverterFactory(GsonConverterFactory.create(gson))
 					.client(httpClient.build())
 					.build();
 			usersService = retrofit.create(UsersService.class);
-			PaymentDataDTO paymentDataDTO = new PaymentDataDTO(token, 100.0f, paymentMethodId, "211652599-qRKOz5YPnhvZwk");
+			String buyerEmail = "test_payer_12345789@testuser.com";
+			String sellerEmail = "test_user_88250708@testuser.com";
+			PaymentDataDTO paymentDataDTO = new PaymentDataDTO(token, 100.0f, paymentMethodId, buyerEmail, sellerEmail);
 			Call<Payment> call = usersService.doPayment(paymentDataDTO);
 
 			call.enqueue(new Callback<Payment>() {
@@ -130,26 +137,6 @@ public class PaymentHistoryActivity extends AppCompatActivity {
 					Toast.makeText(activity, t.getMessage(), Toast.LENGTH_LONG).show();
 				}
 			});
-
-			/*ErrorHandlingCallAdapter.MyCall<Payment> call = MerchantServer.createPayment(activity, Constant.MERCHANT_BASE_URL, Constant.MERCHANT_CREATE_PAYMENT_URI, payment);
-			call.enqueue(new ErrorHandlingCallAdapter.MyCallback<Payment>() {
-				@Override
-				public void success(Response<Payment> response) {
-
-					new MercadoPago.StartActivityBuilder()
-							.setActivity(activity)
-							.setPayment(response.body())
-							.setPaymentMethod(paymentMethod)
-							.startCongratsActivity();
-				}
-
-				@Override
-				public void failure(ApiException apiException) {
-
-					LayoutUtil.showRegularLayout(activity);
-					Toast.makeText(activity, apiException.getMessage(), Toast.LENGTH_LONG).show();
-				}
-			});*/
 		} else {
 
 			Toast.makeText(activity, "Invalid payment method", Toast.LENGTH_LONG).show();

@@ -11,13 +11,15 @@ public class PaymentDataDTO implements Serializable {
 	String cardToken;
 	Float transactionAmount;
 	String paymentMethodId;
-	String customerId;
+	String buyerEmail;
+	String sellerEmail;
 
-	public PaymentDataDTO(String cardToken, Float transactionAmount, String paymentMethodId, String customerId) {
+	public PaymentDataDTO(String cardToken, Float transactionAmount, String paymentMethodId, String buyerEmail, String sellerEmail) {
 		this.cardToken = cardToken;
 		this.transactionAmount = transactionAmount;
 		this.paymentMethodId = paymentMethodId;
-		this.customerId = customerId;
+		this.buyerEmail = buyerEmail;
+		this.sellerEmail = sellerEmail;
 	}
 
 	public String getCardToken() {
@@ -44,11 +46,19 @@ public class PaymentDataDTO implements Serializable {
 		this.paymentMethodId = paymentMethodId;
 	}
 
-	public String getCustomerId() {
-		return customerId;
+	public String getBuyerEmail() {
+		return buyerEmail;
 	}
 
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
+	public void setBuyerEmail(String buyerEmail) {
+		this.buyerEmail = buyerEmail;
+	}
+
+	public String getSellerEmail() {
+		return sellerEmail;
+	}
+
+	public void setSellerEmail(String sellerEmail) {
+		this.sellerEmail = sellerEmail;
 	}
 }

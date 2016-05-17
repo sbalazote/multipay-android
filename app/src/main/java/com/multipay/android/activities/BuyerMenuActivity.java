@@ -22,9 +22,11 @@ import com.facebook.login.widget.ProfilePictureView;
 import com.mercadopago.core.MercadoPago;
 import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.util.JsonUtil;
+import com.mercadopago.util.LayoutUtil;
 import com.multipay.android.helpers.SessionManager;
 import com.multipay.android.multipay.R;
 import com.multipay.android.tasks.LoadImage;
+import com.multipay.android.utils.Constant;
 import com.multipay.android.utils.GooglePlusSignInUtils;
 import com.multipay.android.utils.MultipayMenuItems;
 
@@ -35,7 +37,6 @@ import java.util.List;
 
 public class BuyerMenuActivity extends AppCompatActivity {
 
-	private static String MERCHANT_PUBLIC_KEY = "TEST-76fd8ba9-ddda-499f-8def-bd390d2d06b1";
 	private static int CARD_REQUEST_CODE = 666;
 
 	private ImageView socialLogo;
@@ -50,8 +51,8 @@ public class BuyerMenuActivity extends AppCompatActivity {
 
     protected List<String> mSupportedPaymentTypes = new ArrayList<String>(){{
         add("credit_card");
-		add("debit_card");
-		add("prepaid_card");
+		/*add("debit_card");
+		add("prepaid_card");*/
     }};
 
 	@Override
@@ -164,7 +165,7 @@ public class BuyerMenuActivity extends AppCompatActivity {
 
 				// TODO: here call card activity
 				Intent addCardActivityIntent = new Intent(this, AddCardActivity.class);
-				addCardActivityIntent.putExtra("merchantPublicKey", MERCHANT_PUBLIC_KEY);
+				addCardActivityIntent.putExtra("merchantPublicKey", Constant.MERCHANT_PUBLIC_KEY);
 				addCardActivityIntent.putExtra("paymentMethod", JsonUtil.getInstance().toJson(paymentMethod));
 				startActivityForResult(addCardActivityIntent, CARD_REQUEST_CODE);
 			} else {
@@ -191,7 +192,7 @@ public class BuyerMenuActivity extends AppCompatActivity {
 
 						new MercadoPago.StartActivityBuilder()
 								.setActivity(this)
-								.setPublicKey(MERCHANT_PUBLIC_KEY)
+								.setPublicKey(Constant.MERCHANT_PUBLIC_KEY)
 								.setSupportedPaymentTypes(mSupportedPaymentTypes)
 								.startPaymentMethodsActivity();
 					}
@@ -199,7 +200,7 @@ public class BuyerMenuActivity extends AppCompatActivity {
 			}
 		} else if (requestCode == MercadoPago.CONGRATS_REQUEST_CODE) {
 
-			//LayoutUtil.showRegularLayout(this);
+			LayoutUtil.showRegularLayout(this);
 		}
 	}
 

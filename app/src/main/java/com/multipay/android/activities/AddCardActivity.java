@@ -35,17 +35,23 @@ import com.mercadopago.model.ApiException;
 import com.mercadopago.model.Card;
 import com.mercadopago.model.CardToken;
 import com.mercadopago.model.IdentificationType;
+import com.mercadopago.model.Item;
+import com.mercadopago.model.MerchantPayment;
+import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.model.Token;
 import com.mercadopago.util.ApiUtil;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
 import com.mercadopago.util.MercadoPagoUtil;
+import com.multipay.android.dtos.PaymentDataDTO;
+import com.multipay.android.helpers.SessionManager;
 import com.multipay.android.multipay.R;
 import com.multipay.android.services.UsersService;
 import com.multipay.android.utils.Constant;
 import com.multipay.android.utils.MultipayMenuItems;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -81,6 +87,7 @@ public class AddCardActivity extends AppCompatActivity {
     private MercadoPago mMercadoPago;
     private String mMerchantPublicKey;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 0;
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +98,8 @@ public class AddCardActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         mActivity = this;
+
+        session = SessionManager.getInstance(this.getApplicationContext());
 
         // Get activity parameters
         mMerchantPublicKey = this.getIntent().getStringExtra("merchantPublicKey");
@@ -393,8 +402,49 @@ public class AddCardActivity extends AppCompatActivity {
                 returnIntent.putExtra("paymentMethod", JsonUtil.getInstance().toJson(mPaymentMethod));
                 setResult(RESULT_OK, returnIntent);
                 finish();
+/*
+                // Set item
+                Item item = new Item("id1", 1, new BigDecimal(1000));
 
+                // Set payment method id
+                String paymentMethodId = mPaymentMethod.getId();
+
+                // Set campaign id
+                //Long campaignId = (discount != null) ? discount.getId() : null;
+
+                String merchantAccessToken = session.getUsernameEMail();
+
+                // Set merchant payment
+                //MerchantPayment payment = new MerchantPayment(item, installments, cardIssuerId, token, paymentMethodId, campaignId, merchantAccessToken);
+
+                // Create payment
                 HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+                logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+                httpClient.addInterceptor(logging);
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(Constant.MERCHANT_BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .client(httpClient.build())
+                        .build();
+                final UsersService usersService = retrofit.create(UsersService.class);
+                String buyerEmail = "test_payer_12345789@testuser.com";
+                String sellerEmail = "test_user_88250708@testuser.com";
+                PaymentDataDTO paymentDataDTO = new PaymentDataDTO(response.body().getId(), 100.0f, paymentMethodId, buyerEmail, sellerEmail);
+                Call<Payment> call = usersService.doPayment(paymentDataDTO);
+
+                call.enqueue(new Callback<Payment>() {
+                    @Override
+                    public void onResponse(Call<Payment> call, Response<Payment> response) {
+                    }
+
+                    @Override
+                    public void onFailure(Call<Payment> call, Throwable t) {
+                    }
+                });
+
+                /*HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
                 logging.setLevel(HttpLoggingInterceptor.Level.BODY);
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
                 httpClient.addInterceptor(logging);
@@ -409,7 +459,7 @@ public class AddCardActivity extends AppCompatActivity {
 
                 final UsersService service = retrofit.create(UsersService.class);
 
-                Call<Card> call4 = service.AddNewCardToCustomer("211652599-qRKOz5YPnhvZwk", response.body().getId());
+                Call<Card> call4 = service.AddNewCardToCustomer(session.getUsernameEMail(), response.body().getId());
                 call4.enqueue(new Callback<Card>() {
                     @Override
                     public void onResponse(Call<Card> call, Response<Card> response) {
@@ -420,7 +470,7 @@ public class AddCardActivity extends AppCompatActivity {
                     public void onFailure(Call<Card> call, Throwable t) {
 
                     }
-                });
+                });*/
             }
 
             @Override

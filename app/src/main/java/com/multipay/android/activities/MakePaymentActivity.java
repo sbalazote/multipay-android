@@ -126,7 +126,7 @@ public class MakePaymentActivity extends AppCompatActivity implements OnItemSele
 
 		WebView web = (WebView) auth_dialog.findViewById(R.id.authWebView);
 		web.getSettings().setJavaScriptEnabled(true);
-		web.loadUrl(Constant.OAUTH_URL + "?client_id=" + Constant.CLIENT_ID + "&response_type=code&platform_id=mp&redirect_uri=" + Constant.REDIRECT_URI + "?email=" + sessionManager.getUsernameEMail());
+		web.loadUrl(Constant.OAUTH_URL + "?client_id=" + Constant.CLIENT_ID + "&response_type=code&platform_id=mp&redirect_uri=" + Constant.MERCHANT_BASE_URL + Constant.MERCHANT_REDIRECT_URI + "?email=" + sessionManager.getUsernameEMail());
 		/*web.setWebViewClient(new WebViewClient() {
 
 			boolean authComplete = false;

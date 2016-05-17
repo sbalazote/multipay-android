@@ -43,13 +43,13 @@ public interface UsersService {
 
 	@GET("/api/getCustomer")
 	@Headers("Accept: application/json")
-	Call<String> getCustomer(@Query("customerId") String customerId);
+	Call<String> getCustomer2(@Query("email") String email);
 
 	/* Saves a new card to the customer.
 	 */
 	@Headers("Accept: application/json")
-	@POST("/api/customers/{customerId}/cards")
-	Call<Card> AddNewCardToCustomer(@Path("customerId") String customerId, @Body String cardToken);
+	@POST("/api/customers/{email}/cards")
+	Call<Card> AddNewCardToCustomer(@Path("email") String email, @Body String cardToken);
 
 	@Headers("Accept: application/json")
 	@POST("/api/doPayment")
@@ -74,6 +74,10 @@ public interface UsersService {
 	@Headers("Accept: application/json")
 	@GET("/v1/customers/{id}")
 	Call<Customer> getCustomerById(@Path("id") String id, @Query("access_token") String access_token);
+
+	@GET("/api/getCustomer")
+	@Headers("Accept: application/json")
+	Call<Customer> getCustomer(@Query("seller_email") String sellerEmail, @Query("buyer_email") String buyerEmail);
 
 	/* Updates a customer.
 	 */
