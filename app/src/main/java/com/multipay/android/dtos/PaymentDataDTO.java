@@ -2,8 +2,6 @@ package com.multipay.android.dtos;
 
 import java.io.Serializable;
 
-import retrofit2.http.Field;
-
 /**
  * Created by Sebastian on 29/04/2016.
  */

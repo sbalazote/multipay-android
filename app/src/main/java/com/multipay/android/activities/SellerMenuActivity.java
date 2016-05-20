@@ -22,7 +22,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.widget.ProfilePictureView;
-import com.multipay.android.multipay.R;
+import com.multipay.android.R;
 import com.multipay.android.helpers.SessionManager;
 import com.multipay.android.utils.GooglePlusSignInUtils;
 import com.multipay.android.utils.MultipayMenuItems;

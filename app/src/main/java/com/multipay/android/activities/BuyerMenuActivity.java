@@ -24,7 +24,7 @@ import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
 import com.multipay.android.helpers.SessionManager;
-import com.multipay.android.multipay.R;
+import com.multipay.android.R;
 import com.multipay.android.tasks.LoadImage;
 import com.multipay.android.utils.Constant;
 import com.multipay.android.utils.GooglePlusSignInUtils;

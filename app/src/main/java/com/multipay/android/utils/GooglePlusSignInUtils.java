@@ -22,7 +22,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.plus.Plus;
-import com.multipay.android.multipay.R;
+import com.multipay.android.R;
 
 public class GooglePlusSignInUtils implements ConnectionCallbacks, OnConnectionFailedListener, OnClickListener {
 

@@ -1,6 +1,5 @@
 package com.multipay.android.services;
 
-
 import com.multipay.android.dtos.LoginResponseDTO;
 import com.multipay.android.dtos.RegistrationRequestDTO;
 

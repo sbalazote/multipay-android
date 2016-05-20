@@ -24,7 +24,7 @@ import com.google.gson.GsonBuilder;
 import com.multipay.android.dtos.LoginResponseDTO;
 import com.multipay.android.dtos.RegistrationRequestDTO;
 import com.multipay.android.helpers.SessionManager;
-import com.multipay.android.multipay.R;
+import com.multipay.android.R;
 import com.multipay.android.services.RegistrationService;
 import com.multipay.android.utils.Constant;
 import com.multipay.android.utils.Device;

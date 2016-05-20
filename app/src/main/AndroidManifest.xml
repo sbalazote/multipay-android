@@ -1,27 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.multipay.android.multipay">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.multipay.android">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-
-    <!-- Keeps the processor from sleeping when a message is received. -->
     <uses-permission android:name="android.permission.NFC" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <!--
-     Creates a custom permission so only this app can receive its messages.
-     NOTE: the permission *must* be called PACKAGE.permission.C2D_MESSAGE,
-           where PACKAGE is the application's package name.
-    -->
-    <permission
-        android:name="com.multipay.android.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-    <uses-permission
-        android:name="com.multipay.android.permission.C2D_MESSAGE" />
 
     <!-- This app has permission to register and receive data message. -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -134,31 +121,20 @@
             android:screenOrientation="portrait" >
         </activity>
 
-        <!--
-          BroadcastReceiver that will receive intents from GCM
-          services and handle them to the custom IntentService.
-          The com.google.android.c2dm.permission.SEND permission is necessary
-          so only GCM services can send data messages for the app.
-        -->
-        <receiver
-            android:name="com.multipay.android.gcm.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+        <service
+            android:name="com.multipay.android.fcm.MyFirebaseMessagingService">
             <intent-filter>
-                <!-- Receives the actual messages. -->
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <!-- Receives the registration id. -->
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="com.multipay.android" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
-        </receiver>
-
-        <!--
-          Application-specific subclass of GCMBaseIntentService that will
-          handle received messages.
-          By default, it must be named .GCMIntentService, unless the
-          application uses a custom BroadcastReceiver that redefines its name.
-        -->
-        <service android:name="com.multipay.android.gcm.GCMIntentService" />
+        </service>
+        <!-- [END firebase_service] -->
+        <!-- [START firebase_iid_service] -->
+        <service
+            android:name="com.multipay.android.fcm.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

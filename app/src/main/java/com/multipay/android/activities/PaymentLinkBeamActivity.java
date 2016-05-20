@@ -14,7 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.multipay.android.multipay.R;
+import com.multipay.android.R;
 
 
 public class PaymentLinkBeamActivity extends AppCompatActivity implements CreateNdefMessageCallback {

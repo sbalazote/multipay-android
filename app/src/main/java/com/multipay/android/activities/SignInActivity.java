@@ -15,13 +15,14 @@ import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.multipay.android.dtos.LoginRequestDTO;
 import com.multipay.android.dtos.LoginResponseDTO;
 import com.multipay.android.helpers.SessionManager;
-import com.multipay.android.multipay.R;
+import com.multipay.android.R;
 import com.multipay.android.services.LoginService;
 import com.multipay.android.utils.Constant;
 import com.multipay.android.utils.Device;
@@ -236,7 +237,7 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
         LoginRequestDTO userLogin = new LoginRequestDTO();
         userLogin.setSocialToken(tokenId);
         userLogin.setMobileId(this.mobileId);
-        userLogin.setRegistrationId(session.retrieveRegistrationId());
+        userLogin.setRegistrationId(FirebaseInstanceId.getInstance().getToken());
         userLogin.setSeller(session.getMode().equals("SELLER"));
         mConnectionProgressDialog.show();
         Call<LoginResponseDTO> call = loginService.googleTokenInfo(userLogin);

@@ -1,18 +1,16 @@
 {
   "project_info": {
-    "project_id": "api-project-437797444824",
     "project_number": "437797444824",
-    "name": "MultiPay"
+    "firebase_url": "https://api-project-437797444824.firebaseio.com",
+    "project_id": "api-project-437797444824",
+    "storage_bucket": "api-project-437797444824.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:437797444824:android:cc0613280147d5fb",
-        "client_id": "android:com.multipay.android",
-        "client_type": 1,
         "android_client_info": {
-          "package_name": "com.multipay.android",
-          "certificate_hash": []
+          "package_name": "com.multipay.android"
         }
       },
       "oauth_client": [
@@ -25,6 +23,10 @@
           }
         },
         {
+          "client_id": "437797444824-vj6h3a7samnq8n3vp2c4kp8vf20rot1c.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
           "client_id": "437797444824-6ovnf5l1l1he589sv32tm21qciamiqml.apps.googleusercontent.com",
           "client_type": 3
         },
@@ -33,21 +35,18 @@
           "client_type": 3
         }
       ],
-      "api_key": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYBtAKDe8cI5Gya6iHJgVDQv-f-lHyDcU"
+        }
+      ],
       "services": {
         "analytics_service": {
           "status": 1
         },
-        "cloud_messaging_service": {
-          "status": 2,
-          "apns_config": []
-        },
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
-        },
-        "google_signin_service": {
-          "status": 2
         },
         "ads_service": {
           "status": 1
@@ -57,11 +56,8 @@
     {
       "client_info": {
         "mobilesdk_app_id": "1:437797444824:android:9feeb63f397a26f8",
-        "client_id": "android:com.multipay.android.multipay",
-        "client_type": 1,
         "android_client_info": {
-          "package_name": "com.multipay.android.multipay",
-          "certificate_hash": []
+          "package_name": "com.multipay.android.multipay"
         }
       },
       "oauth_client": [
@@ -74,6 +70,10 @@
           }
         },
         {
+          "client_id": "437797444824-vj6h3a7samnq8n3vp2c4kp8vf20rot1c.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
           "client_id": "437797444824-6ovnf5l1l1he589sv32tm21qciamiqml.apps.googleusercontent.com",
           "client_type": 3
         },
@@ -82,21 +82,18 @@
           "client_type": 3
         }
       ],
-      "api_key": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYBtAKDe8cI5Gya6iHJgVDQv-f-lHyDcU"
+        }
+      ],
       "services": {
         "analytics_service": {
           "status": 1
         },
-        "cloud_messaging_service": {
-          "status": 2,
-          "apns_config": []
-        },
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
-        },
-        "google_signin_service": {
-          "status": 2
         },
         "ads_service": {
           "status": 1
@@ -104,6 +101,5 @@
       }
     }
   ],
-  "client_info": [],
-  "ARTIFACT_VERSION": "1"
+  "configuration_version": "1"
 }

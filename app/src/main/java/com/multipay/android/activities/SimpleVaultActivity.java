@@ -22,7 +22,6 @@ import com.google.gson.reflect.TypeToken;
 import com.mercadopago.adapters.CustomerCardsAdapter;
 import com.mercadopago.adapters.ErrorHandlingCallAdapter;
 import com.mercadopago.core.MercadoPago;
-import com.mercadopago.core.MerchantServer;
 import com.mercadopago.model.ApiException;
 import com.mercadopago.model.Card;
 import com.mercadopago.model.CardToken;
@@ -35,13 +34,10 @@ import com.mercadopago.util.ApiUtil;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
 import com.mercadopago.util.MercadoPagoUtil;
-import com.multipay.android.dtos.LoginResponseDTO;
 import com.multipay.android.helpers.SessionManager;
-import com.multipay.android.multipay.R;
-import com.multipay.android.services.LoginService;
-import com.multipay.android.services.UsersService;
+import com.multipay.android.R;
+import com.multipay.android.services.CustomerService;
 import com.multipay.android.utils.Constant;
-import com.multipay.android.utils.MultipayMenuItems;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -86,7 +82,7 @@ public class SimpleVaultActivity extends AppCompatActivity {
 	protected List<String> mSupportedPaymentTypes;
 
 	private Retrofit retrofit;
-	private UsersService usersService;
+	private CustomerService customerService;
 	private SessionManager session;
 
 	@Override
@@ -109,7 +105,7 @@ public class SimpleVaultActivity extends AppCompatActivity {
 				.addConverterFactory(GsonConverterFactory.create(gson1))
 				.client(httpClient.build())
 				.build();
-		usersService = retrofit.create(UsersService.class);
+		customerService = retrofit.create(CustomerService.class);
 
 		// Get activity parameters
 		mMerchantPublicKey = this.getIntent().getStringExtra("merchantPublicKey");
@@ -341,7 +337,7 @@ public class SimpleVaultActivity extends AppCompatActivity {
 		//ErrorHandlingCallAdapter.MyCall<Customer> call = MerchantServer.getCustomer(this, mMerchantBaseUrl, mMerchantGetCustomerUri, mMerchantAccessToken);
 		String buyerEmail = "test_payer_12345789@testuser.com";
 		String sellerEmail = "test_user_88250708@testuser.com";
-		Call<Customer> call = usersService.getCustomer(sellerEmail, buyerEmail);
+		Call<Customer> call = customerService.getCustomer(sellerEmail, buyerEmail);
 		call.enqueue(new Callback<Customer>() {
 			@Override
 			public void onResponse(Call<Customer> call, Response<Customer> response) {

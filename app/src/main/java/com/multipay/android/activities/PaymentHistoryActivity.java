@@ -14,10 +14,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.mercadopago.adapters.ErrorHandlingCallAdapter;
 import com.mercadopago.core.MercadoPago;
-import com.mercadopago.core.MerchantServer;
-import com.mercadopago.model.ApiException;
 import com.mercadopago.model.Discount;
 import com.mercadopago.model.Item;
 import com.mercadopago.model.MerchantPayment;
@@ -26,9 +23,9 @@ import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
 import com.multipay.android.dtos.PaymentDataDTO;
-import com.multipay.android.multipay.R;
+import com.multipay.android.R;
 import com.multipay.android.helpers.SessionManager;
-import com.multipay.android.services.UsersService;
+import com.multipay.android.services.CustomerService;
 import com.multipay.android.utils.Constant;
 import com.multipay.android.utils.MultipayMenuItems;
 
@@ -52,7 +49,7 @@ public class PaymentHistoryActivity extends AppCompatActivity {
 	public static final int SIMPLE_VAULT_REQUEST_CODE = 10;
 
 	private Retrofit retrofit;
-	private UsersService usersService;
+	private CustomerService customerService;
 
 	protected List<String> mSupportedPaymentTypes = new ArrayList<String>(){{
 		add("credit_card");
@@ -115,11 +112,11 @@ public class PaymentHistoryActivity extends AppCompatActivity {
 					.addConverterFactory(GsonConverterFactory.create(gson))
 					.client(httpClient.build())
 					.build();
-			usersService = retrofit.create(UsersService.class);
+			customerService = retrofit.create(CustomerService.class);
 			String buyerEmail = "test_payer_12345789@testuser.com";
 			String sellerEmail = "test_user_88250708@testuser.com";
 			PaymentDataDTO paymentDataDTO = new PaymentDataDTO(token, 100.0f, paymentMethodId, buyerEmail, sellerEmail);
-			Call<Payment> call = usersService.doPayment(paymentDataDTO);
+			Call<Payment> call = customerService.doPayment(paymentDataDTO);
 
 			call.enqueue(new Callback<Payment>() {
 				@Override

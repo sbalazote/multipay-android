@@ -14,7 +14,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
-import com.multipay.android.multipay.R;
+import com.multipay.android.R;
 import com.multipay.android.helpers.SessionManager;
 
 public class SelectModeActivity extends ActionBarActivity implements SurfaceHolder.Callback {

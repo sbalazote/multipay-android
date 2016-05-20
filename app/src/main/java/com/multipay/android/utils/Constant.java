@@ -4,7 +4,9 @@ package com.multipay.android.utils;
  * Created by Sebastian on 19/04/2016.
  */
 public class Constant {
-    //public static final String MERCHANT_PUBLIC_KEY = "TEST-76fd8ba9-ddda-499f-8def-bd390d2d06b1";
+	/**
+     *  Clave Publica del Vendedor asociado.
+     */
     public static final String MERCHANT_PUBLIC_KEY = "TEST-ec122dc5-a802-43c1-92d5-c4e5670f3c8c";
 
     /**
@@ -13,8 +15,10 @@ public class Constant {
     public static String CLIENT_ID = "5196180579796665";
     public static String OAUTH_URL = "https://auth.mercadolibre.com.ar/authorization";
 
-    // * Merchant server vars
-    public static final String MERCHANT_BASE_URL = "https://1e5c7f65.ngrok.io/";
+	/**
+     *  Merchant server vars
+     */
+    public static final String MERCHANT_BASE_URL = "https://618b0302.ngrok.io";
     public static final String MERCHANT_GET_CUSTOMER_URI = "/api/getCustomer";
     public static final String MERCHANT_CREATE_PAYMENT_URI = "/api/doPayment";
     public static final String MERCHANT_GET_DISCOUNT_URI = "/api/getDiscounts";

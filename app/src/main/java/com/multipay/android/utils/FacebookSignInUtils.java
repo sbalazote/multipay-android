@@ -20,7 +20,7 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.widget.ProfilePictureView;
-import com.multipay.android.multipay.R;
+import com.multipay.android.R;
 
 import org.json.JSONObject;
 
