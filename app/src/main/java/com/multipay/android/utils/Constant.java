@@ -18,7 +18,7 @@ public class Constant {
 	/**
      *  Merchant server vars
      */
-    public static final String MERCHANT_BASE_URL = "https://618b0302.ngrok.io";
+    public static final String MERCHANT_BASE_URL = "https://4594148f.ngrok.io";
     public static final String MERCHANT_GET_CUSTOMER_URI = "/api/getCustomer";
     public static final String MERCHANT_CREATE_PAYMENT_URI = "/api/doPayment";
     public static final String MERCHANT_GET_DISCOUNT_URI = "/api/getDiscounts";

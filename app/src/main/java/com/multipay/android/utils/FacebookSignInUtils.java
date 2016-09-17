@@ -13,8 +13,6 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
@@ -22,19 +20,12 @@ import com.facebook.login.widget.LoginButton;
 import com.facebook.login.widget.ProfilePictureView;
 import com.multipay.android.R;
 
-import org.json.JSONObject;
-
 import java.util.Arrays;
 import java.util.List;
 
 public class FacebookSignInUtils implements ProfilePictureView.OnErrorListener {
 
 	private String LOGCAT_TAG = "FacebookSignInUtils";
-    public static final String FACEBOOK_NAME = "name";
-    public static final String FACEBOOK_EMAIL = "email";
-    public static final String FACEBOOK_FIRST_NAME = "first_name";
-    public static final String FACEBOOK_LAST_NAME = "last_name";
-    public static final String FACEBOOK_USERID = "userid";
 	public static final String FACEBOOK_ACCESS_TOKEN = "access_token";
 	private Context context;
 	private LoginButton facebookSignInButton;

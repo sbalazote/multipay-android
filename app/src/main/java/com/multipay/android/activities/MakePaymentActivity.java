@@ -1,6 +1,5 @@
 package com.multipay.android.activities;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,16 +12,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.multipay.android.helpers.SessionManager;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mercadopago.core.MercadoPago;
+import com.mercadopago.util.LayoutUtil;
 import com.multipay.android.R;
+import com.multipay.android.dtos.PaymentDataDTO;
+import com.multipay.android.dtos.PaymentLinkDTO;
+import com.multipay.android.helpers.SessionManager;
+import com.multipay.android.services.CustomerService;
+import com.multipay.android.services.PaymentLinkService;
 import com.multipay.android.tasks.LoadImages;
 import com.multipay.android.utils.Constant;
 import com.multipay.android.utils.ItemCategories;
@@ -35,6 +43,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MakePaymentActivity extends AppCompatActivity implements OnItemSelectedListener {
 	private Spinner paymentMethodsSpinner;
 	private Spinner itemCategoriesSpinner;
@@ -43,7 +59,12 @@ public class MakePaymentActivity extends AppCompatActivity implements OnItemSele
 	private String[] thumbnailsArray;
 	private Bitmap[] thumbnails;
 	private SessionManager session;
-	
+
+	public static final int MAKE_PAYMENT_REQUEST_CODE = 7;
+
+	private Retrofit retrofit;
+	private PaymentLinkService paymentLinkService;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -118,60 +139,6 @@ public class MakePaymentActivity extends AppCompatActivity implements OnItemSele
 		}
 	}
 
-	private void authorizeMultipay() {
-		final Dialog auth_dialog = new Dialog(MakePaymentActivity.this);
-		auth_dialog.setContentView(R.layout.auth_screen);
-
-		SessionManager sessionManager = SessionManager.getInstance(this.getApplicationContext());
-
-		WebView web = (WebView) auth_dialog.findViewById(R.id.authWebView);
-		web.getSettings().setJavaScriptEnabled(true);
-		web.loadUrl(Constant.OAUTH_URL + "?client_id=" + Constant.CLIENT_ID + "&response_type=code&platform_id=mp&redirect_uri=" + Constant.MERCHANT_BASE_URL + Constant.MERCHANT_REDIRECT_URI + "?email=" + sessionManager.getUsernameEMail());
-		/*web.setWebViewClient(new WebViewClient() {
-
-			boolean authComplete = false;
-			Intent resultIntent = new Intent();
-
-			@Override
-			public void onPageStarted(WebView view, String url, Bitmap favicon) {
-				super.onPageStarted(view, url, favicon);
-			}
-
-			String authCode;
-
-			@Override
-			public void onPageFinished(WebView view, String url) {
-				super.onPageFinished(view, url);
-
-				if (url.contains("?code=") && !authComplete) {
-					Uri uri = Uri.parse(url);
-					authCode = uri.getQueryParameter("code");
-					Log.i("", "CODE : " + authCode);
-					authComplete = true;
-					resultIntent.putExtra("code", authCode);
-					MakePaymentActivity.this.setResult(Activity.RESULT_OK, resultIntent);
-					setResult(Activity.RESULT_CANCELED, resultIntent);
-
-					auth_dialog.dismiss();
-					Toast.makeText(getApplicationContext(), "El AuthCode MP es: " + authCode, Toast.LENGTH_SHORT)
-							.show();
-
-				} else if (url.contains("error=access_denied")) {
-					Log.i("", "ACCESS_DENIED_HERE");
-					resultIntent.putExtra("code", authCode);
-					authComplete = true;
-					setResult(Activity.RESULT_CANCELED, resultIntent);
-					Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_SHORT).show();
-
-					auth_dialog.dismiss();
-				}
-			}
-		});*/
-		auth_dialog.show();
-		auth_dialog.setTitle("Autorizar MultiPay");
-		auth_dialog.setCancelable(true);
-	}
-	
 	public class MyAdapter extends ArrayAdapter<String>{
 		 
         public MyAdapter(Context context, int textViewResourceId,   String[] objects) {
@@ -201,11 +168,63 @@ public class MakePaymentActivity extends AppCompatActivity implements OnItemSele
             return row;
             }
         }
-	
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (requestCode == MAKE_PAYMENT_REQUEST_CODE) {
+			if (resultCode == RESULT_OK) {
+
+				//llamo a notificar al comprador.
+				callToNotifyBuyer();
+
+			} else {
+
+				if ((data != null) && (data.getStringExtra("apiException") != null)) {
+					Toast.makeText(getApplicationContext(), data.getStringExtra("apiException"), Toast.LENGTH_LONG).show();
+				}
+			}
+		} else if (requestCode == MercadoPago.CONGRATS_REQUEST_CODE) {
+
+			LayoutUtil.showRegularLayout(this);
+		}
+	}
+
+	private void callToNotifyBuyer() {
+		HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+		logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+		OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+		httpClient.addInterceptor(logging);
+
+		Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
+
+		retrofit = new Retrofit.Builder()
+				.baseUrl(Constant.MERCHANT_BASE_URL)
+				.addConverterFactory(GsonConverterFactory.create(gson))
+				.client(httpClient.build())
+				.build();
+		paymentLinkService = retrofit.create(PaymentLinkService.class);
+		String buyerEmail = "test_payer_12345789@testuser.com";
+		String sellerEmail = "test_user_88250708@testuser.com";
+		String description = "test02";
+		PaymentLinkDTO paymentLinkDTO = new PaymentLinkDTO(session.retrievePhoneAreaCode(), session.retrievePhoneNumber(), description, 100.0f, sellerEmail);
+		Call<Object> call = paymentLinkService.paymentLink(paymentLinkDTO);
+
+		call.enqueue(new Callback<Object>() {
+			@Override
+			public void onResponse(Call<Object> call, Response<Object> response) {
+			}
+
+			@Override
+			public void onFailure(Call<Object> call, Throwable t) {
+			}
+		});
+	}
+
+	// Envio link de pago a comprador
 	public void sendPaymentLink(View view) {
-		authorizeMultipay();
-		Intent paymentLinkBeamActivityIntent = new Intent(this, PaymentLinkBeamActivity.class);
-		startActivity(paymentLinkBeamActivityIntent);
+		Intent enterPhoneNumberIntent = new Intent(this, EnterPhoneNumberActivity.class);
+		startActivityForResult(enterPhoneNumberIntent, MAKE_PAYMENT_REQUEST_CODE);
 	}
 
 	public void onItemSelected(AdapterView<?> parent, View view,

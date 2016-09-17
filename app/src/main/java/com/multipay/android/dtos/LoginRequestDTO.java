@@ -12,6 +12,8 @@ public class LoginRequestDTO implements Serializable {
 	private String registrationId;
 	private String socialToken;
 	private boolean isSeller;
+	private Integer phoneAreaCode;
+	private String phoneNumber;
 
 	public String getUserEmail() {
 		return email;
@@ -59,5 +61,21 @@ public class LoginRequestDTO implements Serializable {
 
 	public void setSeller(boolean seller) {
 		isSeller = seller;
+	}
+
+	public Integer getPhoneAreaCode() {
+		return phoneAreaCode;
+	}
+
+	public void setPhoneAreaCode(Integer phoneAreaCode) {
+		this.phoneAreaCode = phoneAreaCode;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 }

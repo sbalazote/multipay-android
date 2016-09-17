@@ -44,6 +44,9 @@ public class SessionManager {
 	private static final String KEY_REGISTRATION_ID = "registrationId";
 	// Version actual de la aplicacion MultiPay.
 	private static final String KEY_APP_VERSION = "appVersion";
+	// Version actual de la aplicacion MultiPay.
+	private static final String KEY_PHONE_AREA_CODE = "phoneAreaCode";
+	private static final String KEY_PHONE_NUMBER = "phoneNumber";
 	// Instancia estatica para MultiPay.
 	private static SessionManager instance;
 
@@ -177,6 +180,42 @@ public class SessionManager {
 	public void storeAppVersion(int appVersion) {
 		editor = sharedPreferences.edit();
 		editor.putInt(KEY_APP_VERSION, appVersion);
+		editor.commit();
+	}
+
+	/**
+	 * Obtengo el numero de area de telefono.
+	 * @return
+	 */
+	public Integer retrievePhoneAreaCode() {
+		return sharedPreferences.getInt(KEY_PHONE_AREA_CODE, Integer.MIN_VALUE);
+	}
+
+	/**
+	 * Guardo el numero de area de telefono.
+	 * @param phoneAreaCode
+	 */
+	public void storePhoneAreaCode(int phoneAreaCode) {
+		editor = sharedPreferences.edit();
+		editor.putInt(KEY_PHONE_AREA_CODE, phoneAreaCode);
+		editor.commit();
+	}
+
+	/**
+	 * Obtengo el numero de telefono.
+	 * @return
+	 */
+	public String retrievePhoneNumber() {
+		return sharedPreferences.getString(KEY_PHONE_NUMBER, "");
+	}
+
+	/**
+	 * Guardo el numero de telefono.
+	 * @param phoneNumber
+	 */
+	public void storePhoneNumber(String phoneNumber) {
+		editor = sharedPreferences.edit();
+		editor.putString(KEY_PHONE_NUMBER, phoneNumber);
 		editor.commit();
 	}
 }

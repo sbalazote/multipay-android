@@ -192,6 +192,8 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
         userLogin.setMobileId(this.mobileId);
         userLogin.setRegistrationId(session.retrieveRegistrationId());
         userLogin.setSeller(session.getMode().equals("SELLER"));
+        userLogin.setPhoneAreaCode(session.retrievePhoneAreaCode());
+        userLogin.setPhoneNumber(session.retrievePhoneNumber());
         mConnectionProgressDialog.show();
         Call<LoginResponseDTO> call = loginService.attemptNativeLogin(userLogin);
         call.enqueue(new Callback<LoginResponseDTO>() {
@@ -239,6 +241,8 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
         userLogin.setMobileId(this.mobileId);
         userLogin.setRegistrationId(FirebaseInstanceId.getInstance().getToken());
         userLogin.setSeller(session.getMode().equals("SELLER"));
+        userLogin.setPhoneAreaCode(session.retrievePhoneAreaCode());
+        userLogin.setPhoneNumber(session.retrievePhoneNumber());
         mConnectionProgressDialog.show();
         Call<LoginResponseDTO> call = loginService.googleTokenInfo(userLogin);
         call.enqueue(new Callback<LoginResponseDTO>() {
@@ -286,6 +290,8 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
         userLogin.setMobileId(this.mobileId);
         userLogin.setRegistrationId(session.retrieveRegistrationId());
         userLogin.setSeller(session.getMode().equals("SELLER"));
+        userLogin.setPhoneAreaCode(session.retrievePhoneAreaCode());
+        userLogin.setPhoneNumber(session.retrievePhoneNumber());
         mConnectionProgressDialog.show();
         Call<LoginResponseDTO> call = loginService.facebookTokenInfo(userLogin);
         call.enqueue(new Callback<LoginResponseDTO>() {

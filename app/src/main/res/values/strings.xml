@@ -80,6 +80,8 @@
     
     <string name="document_type_prompt">Seleccione tipo de doc...</string>
     <string name="title_activity_simple_vault">Pagar</string>
+    <string name="title_activity_enter_phone_number">Ingrese su Nro. de Telefono</string>
+    <string name="enter_phone_number_button">CONFIRMAR NRO.</string>
 
     <style name="ButtonText">
     <!-- <item name="android:layout_width">fill_parent</item>

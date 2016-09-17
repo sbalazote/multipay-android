@@ -2,27 +2,31 @@ package com.multipay.android.activities;
 
 import java.io.IOException;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Toast;
 
+import com.mercadopago.core.MercadoPago;
+import com.mercadopago.util.LayoutUtil;
 import com.multipay.android.R;
 import com.multipay.android.helpers.SessionManager;
 
-public class SelectModeActivity extends ActionBarActivity implements SurfaceHolder.Callback {
+public class SelectModeActivity extends AppCompatActivity implements SurfaceHolder.Callback {
 
 	private MediaPlayer mediaPlayer;
 	private SurfaceView surfaceView;
 	private SessionManager session;
 	private static final String LOGCAT_TAG = "SelectModeActivity";
+
+	public static final int SELECT_MODE_REQUEST_CODE = 8;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -81,6 +85,26 @@ public class SelectModeActivity extends ActionBarActivity implements SurfaceHold
 	public void surfaceDestroyed(SurfaceHolder holder) {
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (requestCode == SELECT_MODE_REQUEST_CODE) {
+			if (resultCode == RESULT_OK) {
+
+			Intent signInActivityIntent = new Intent(this, SignInActivity.class);
+			startActivity(signInActivityIntent);
+			} else {
+
+				if ((data != null) && (data.getStringExtra("apiException") != null)) {
+					Toast.makeText(getApplicationContext(), data.getStringExtra("apiException"), Toast.LENGTH_LONG).show();
+				}
+			}
+		} else if (requestCode == MercadoPago.CONGRATS_REQUEST_CODE) {
+
+			LayoutUtil.showRegularLayout(this);
+		}
+	}
+
 	/**
 	 * Me dirijo hacia la pantalla de Logueo.
 	 * @param view
@@ -99,7 +123,7 @@ public class SelectModeActivity extends ActionBarActivity implements SurfaceHold
 	public void buyerLogin(View view) {
 		// Ajusto en preferencias de MultiPay el modo Comprador.
 		session.setMode("BUYER");
-		Intent signInActivityIntent = new Intent(this, SignInActivity.class);
-		startActivity(signInActivityIntent);
+		Intent enterPhoneNumberIntent = new Intent(this, EnterPhoneNumberActivity.class);
+		startActivityForResult(enterPhoneNumberIntent, SELECT_MODE_REQUEST_CODE);
 	}
 }
