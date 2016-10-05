@@ -15,7 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -24,6 +26,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.widget.ProfilePictureView;
 import com.multipay.android.R;
 import com.multipay.android.helpers.SessionManager;
+import com.multipay.android.utils.Constant;
 import com.multipay.android.utils.GooglePlusSignInUtils;
 import com.multipay.android.utils.MultipayMenuItems;
 
@@ -37,10 +40,12 @@ public class SellerMenuActivity extends AppCompatActivity {
 	private TextView profileUsername;
 	private String signInType;
 	private String name;
+	private String email;
 	GooglePlusSignInUtils gpLogin;
-	private WebView current_promos;
+	private WebView OAuthMPWebView;
 	private SessionManager session;
-	
+	private LinearLayout sellerMenuOptions;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,6 +56,7 @@ public class SellerMenuActivity extends AppCompatActivity {
     	session = SessionManager.getInstance(this.getApplicationContext());
     	signInType = session.getUserSignInType();
     	name = session.getUsername();
+		email = session.getUsernameEMail();
 		
 		socialLogo = (ImageView) findViewById(R.id.social_logo_imageview);
 		
@@ -62,32 +68,46 @@ public class SellerMenuActivity extends AppCompatActivity {
 
 		// Find the user's name view
 		profileUsername = (TextView) findViewById(R.id.profile_username);
-		
-		current_promos = (WebView) findViewById(R.id.current_promos_webView);
+
+		sellerMenuOptions = (LinearLayout) findViewById(R.id.seller_menu_options);
+
+		boolean firstUse = getIntent().getBooleanExtra("com.multipay.android.FirstUse", false);
+
+		if (firstUse) {
+			sellerMenuOptions.setVisibility(View.GONE);
+
+			OAuthMPWebView = (WebView) findViewById(R.id.OAuthMP_webView);
+			OAuthMPWebView.setWebViewClient(new MyWebViewClient());
+			OAuthMPWebView.setVisibility(View.VISIBLE);
+			OAuthMPRequest();
+		}
 
 		// Get the user's data.
-		if (signInType.equals("FACEBOOK")) {
-			socialLogo.setImageResource(R.drawable.facebook_logo__blue);
-			facebookProfilePicture.setVisibility(View.VISIBLE);
-			makeMeRequest();
-			gPlusProfilePicture.setVisibility(View.GONE);
-			profileUsername.setText(name);
-		} else if (signInType.equals("GOOGLE")) {
-			socialLogo.setImageResource(R.drawable.gplus_logo);
-			facebookProfilePicture.setVisibility(View.GONE);
-			gPlusProfilePicture.setVisibility(View.VISIBLE);
-			new LoadProfileImage(gPlusProfilePicture).execute(GooglePlusSignInUtils.googlePlusProfilePhotoUrl);
-			profileUsername.setText(name);
-		} else {
-			socialLogo.setImageResource(R.drawable.ic_logo_multipay);
-			facebookProfilePicture.setVisibility(View.GONE);
-			gPlusProfilePicture.setVisibility(View.VISIBLE);
-			gPlusProfilePicture.setImageResource(R.drawable.generic_user);
-			profileUsername.setText(name);
+		switch (signInType) {
+			case "FACEBOOK":
+				socialLogo.setImageResource(R.drawable.facebook_logo__blue);
+				facebookProfilePicture.setVisibility(View.VISIBLE);
+				makeMeRequest();
+				gPlusProfilePicture.setVisibility(View.GONE);
+				profileUsername.setText(name);
+				break;
+			case "GOOGLE":
+				socialLogo.setImageResource(R.drawable.gplus_logo);
+				facebookProfilePicture.setVisibility(View.GONE);
+				gPlusProfilePicture.setVisibility(View.VISIBLE);
+				new LoadProfileImage(gPlusProfilePicture).execute(GooglePlusSignInUtils.googlePlusProfilePhotoUrl);
+				profileUsername.setText(name);
+				break;
+			default:
+				socialLogo.setImageResource(R.drawable.ic_logo_multipay);
+				facebookProfilePicture.setVisibility(View.GONE);
+				gPlusProfilePicture.setVisibility(View.VISIBLE);
+				gPlusProfilePicture.setImageResource(R.drawable.generic_user);
+				profileUsername.setText(name);
+				break;
 		}
 	}
 
-	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	getMenuInflater().inflate(R.menu.menu_activity_seller_signed_in, menu);
@@ -119,8 +139,8 @@ public class SellerMenuActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // Do Here what ever you want do on back press;
-		if (current_promos.isShown()) {
-			current_promos.setVisibility(View.GONE);
+		if (OAuthMPWebView.isShown()) {
+			OAuthMPWebView.setVisibility(View.GONE);
 		}
     }
     
@@ -172,18 +192,44 @@ public class SellerMenuActivity extends AppCompatActivity {
 		request.executeAsync();
 	}
 
-	public void paymentHistory(View view) {
-		Intent paymentHistoryIntent = new Intent(this, PaymentHistoryActivity.class);
-    	startActivity(paymentHistoryIntent);
+	private class MyWebViewClient extends WebViewClient {
+		@Override
+		public boolean shouldOverrideUrlLoading(WebView view, String url) {
+			view.loadUrl(url);
+			return true;
+		}
+
+		@Override
+		public void onPageStarted(WebView view, String url, Bitmap favicon) {
+			super.onPageStarted(view, url, favicon);
+			//You can add some custom functionality here
+		}
+
+		@Override
+		public void onPageFinished(WebView view, String url) {
+			super.onPageFinished(view, url);
+			//You can add some custom functionality here
+		}
+
+		@Override
+		public void onReceivedError(WebView view, int errorCode,
+									String description, String failingUrl) {
+			super.onReceivedError(view, errorCode, description, failingUrl);
+			//You can add some custom functionality here
+		}
 	}
 
-	public void viewPromos(View view) {
-		WebSettings webSettings = current_promos.getSettings();
+	private void OAuthMPRequest() {
+		WebSettings webSettings = OAuthMPWebView.getSettings();
 		webSettings.setBuiltInZoomControls(true);
 		webSettings.setLoadWithOverviewMode(true);
 		webSettings.setUseWideViewPort(true);
-		current_promos.loadUrl("https://www.mercadopago.com/mla/credit_card_promos.htm");
-		current_promos.setVisibility(View.VISIBLE);
+		OAuthMPWebView.loadUrl(Constant.OAUTH_URL + "?client_id=" + Constant.CLIENT_ID + "&response_type=code&platform_id=mp&redirect_uri=" + Constant.MERCHANT_BASE_URL + Constant.MERCHANT_REDIRECT_URI + "?email=" + email);
+	}
+
+	public void paymentHistory(View view) {
+		Intent paymentHistoryIntent = new Intent(this, PaymentHistoryActivity.class);
+    	startActivity(paymentHistoryIntent);
 	}
 
 	public void makePayment(View view) {

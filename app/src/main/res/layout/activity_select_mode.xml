@@ -1,55 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/linearLayout1"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/my_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
 
-        <SurfaceView
-            android:id="@+id/surface"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/buttonslayout"
-            android:layout_alignParentTop="true"
-            android:paddingTop="10dip" />
+    <SurfaceView
+        android:id="@+id/surface"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonslayout"
+        android:layout_alignParentTop="true"
+        android:paddingTop="10dip"/>
 
-        <LinearLayout
-            android:id="@+id/buttonslayout"
-    		android:orientation="horizontal"
-    		android:layout_width="match_parent"
-    		android:layout_height="wrap_content"
-    		android:layout_alignParentBottom="true"
-    		android:weightSum="1">
-        
-        
+    <LinearLayout
+        android:id="@+id/buttonslayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+
         <Button
             android:id="@+id/seller_mode_login"
             style="@style/ButtonText"
             android:layout_width="0dp"
-            android:layout_weight="0.5"
             android:layout_height="wrap_content"
+            android:layout_weight="0.5"
             android:background="@drawable/btn_purple"
-            android:onClick="sellerLogin"
-            android:text="@string/seller_mode_login" />
+            android:onClick="sellerMode"
+            android:text="@string/seller_mode_login"/>
 
         <Button
             android:id="@+id/buyer_mode_login"
             style="@style/ButtonText"
             android:layout_width="0dp"
-            android:layout_weight="0.5"
             android:layout_height="wrap_content"
+            android:layout_weight="0.5"
             android:background="@drawable/btn_purple"
-            android:onClick="buyerLogin"
-            android:text="@string/buyer_mode_login" />
-</LinearLayout>
-    </RelativeLayout>
+            android:onClick="buyerMode"
+            android:text="@string/buyer_mode_login"/>
 
+    </LinearLayout>
+
+</RelativeLayout>

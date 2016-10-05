@@ -86,13 +86,6 @@
                 android:value="com.multipay.android.activities.SellerMenuActivity" />
         </activity>
         <activity
-            android:name="com.multipay.android.activities.SecondActivity">
-            <intent-filter>
-                <action android:name="OPEN_ACTIVITY_1" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name="com.multipay.android.activities.MakePaymentActivity"
             android:label="@string/title_activity_make_payment"
             android:windowSoftInputMode="adjustResize|stateHidden"

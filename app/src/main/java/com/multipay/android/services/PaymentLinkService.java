@@ -1,5 +1,6 @@
 package com.multipay.android.services;
 
+import com.multipay.android.dtos.LoginResponseDTO;
 import com.multipay.android.dtos.PaymentLinkDTO;
 
 import retrofit2.Call;
@@ -13,5 +14,5 @@ import retrofit2.http.POST;
 public interface PaymentLinkService {
 	@Headers("Accept: application/json")
 	@POST("/api/paymentLink")
-	Call<Object> paymentLink(@Body PaymentLinkDTO paymentLinkDTO);
+	Call<LoginResponseDTO> paymentLink(@Body PaymentLinkDTO paymentLinkDTO);
 }

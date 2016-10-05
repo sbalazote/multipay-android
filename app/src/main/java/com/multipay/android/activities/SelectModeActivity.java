@@ -109,7 +109,7 @@ public class SelectModeActivity extends AppCompatActivity implements SurfaceHold
 	 * Me dirijo hacia la pantalla de Logueo.
 	 * @param view
 	 */
-	public void sellerLogin(View view) {
+	public void sellerMode(View view) {
 		// Ajusto en preferencias de MultiPay el modo Vendedor.
 		session.setMode("SELLER");
 		Intent signInActivityIntent = new Intent(this, SignInActivity.class);
@@ -120,7 +120,7 @@ public class SelectModeActivity extends AppCompatActivity implements SurfaceHold
 	 * Me dirijo hacia la pantalla de Logueo.
 	 * @param view
 	 */
-	public void buyerLogin(View view) {
+	public void buyerMode(View view) {
 		// Ajusto en preferencias de MultiPay el modo Comprador.
 		session.setMode("BUYER");
 		Intent enterPhoneNumberIntent = new Intent(this, EnterPhoneNumberActivity.class);

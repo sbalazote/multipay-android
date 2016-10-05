@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/signup_scrollView"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/signup_scrollView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto">
+                android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -14,221 +14,238 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
 
-    <LinearLayout
-            android:id="@+id/social_login_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:layout_below="@+id/my_toolbar">
-
-            <ImageView
-                android:id="@+id/app_logo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/background" />
-        </LinearLayout>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/my_toolbar">
 
         <LinearLayout
-            android:id="@+id/signup_container"
+            android:id="@+id/seller_menu_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/social_login_layout"
+            android:layout_below="@+id/my_toolbar"
             android:orientation="vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="20dp" >
+            android:padding="10dp">
 
-            <EditText
-                android:id="@+id/email_input"
+            <LinearLayout
+                android:id="@+id/social_login_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_email"
-                android:ems="10"
-                android:hint="@string/email_input_placeholder"
-                android:inputType="textEmailAddress" />
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
 
-            <EditText
-                android:id="@+id/password_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_password"
-                android:ems="10"
-                android:hint="@string/password_input_placeholder"
-                android:inputType="textPassword" />
-            
-            <EditText
-                android:id="@+id/name_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_username"
-                android:ems="10"
-                android:hint="@string/name_input_placeholder"
-                android:inputType="textPersonName" />
-            
-            <EditText
-                android:id="@+id/surname_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_username"
-                android:ems="10"
-                android:hint="@string/surname_input_placeholder"
-                android:inputType="textPersonName" />
-            
-               <LinearLayout
-                android:id="@+id/identification_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="1" >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/app_logo"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight=".4"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal" >
-
-                    <Spinner
-                        android:id="@+id/document_type"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:prompt="@string/document_type_prompt"
-                        />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".6"
-                    android:baselineAligned="false"
-                    android:orientation="vertical" >
-
-                    <EditText
-                        android:id="@+id/document_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:drawableLeft="@drawable/ic_password"
-                		android:ems="10"
-                		android:hint="@string/document_number_input_placeholder"
-                        android:singleLine="true" />
-                </LinearLayout>
-            </LinearLayout>
-            
-               <LinearLayout
-                android:id="@+id/address_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="1" >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight=".6"
-                    android:baselineAligned="false"
-                    android:orientation="vertical" >
-
-                    <EditText
-                        android:id="@+id/street_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:drawableLeft="@drawable/ic_password"
-                		android:ems="10"
-                		android:hint="@string/street_name_input_placeholder"
-                        android:singleLine="true" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".2"
-                    android:orientation="horizontal" >
-
-                    <EditText
-                        android:id="@+id/street_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:drawableLeft="@drawable/ic_password"
-                		android:ems="10"
-                		android:hint="@string/street_number_input_placeholder"
-                        android:singleLine="true" />
-                </LinearLayout>
-                
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".2"
-                    android:orientation="horizontal" >
-
-                    <EditText
-                        android:id="@+id/zip_code"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:drawableLeft="@drawable/ic_password"
-                		android:ems="10"
-                		android:hint="@string/zip_code_input_placeholder"
-                        android:singleLine="true" />
-                </LinearLayout>
-            </LinearLayout>
-            
-               <LinearLayout
-                android:id="@+id/phone_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="1" >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight=".4"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal" >
-
-                    <EditText
-                        android:id="@+id/area_code"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPostalAddress"
-                        android:drawableLeft="@drawable/ic_password"
-                		android:ems="10"
-                		android:hint="@string/area_code_input_placeholder"
-                        android:singleLine="true" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".6"
-                    android:orientation="vertical" >
-
-                    <EditText
-                        android:id="@+id/phone_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="phone"
-                        android:drawableLeft="@drawable/ic_password"
-                		android:ems="10"
-                		android:hint="@string/phone_number_input_placeholder"
-                        android:singleLine="true" />
-                </LinearLayout>
+                    android:src="@drawable/background"/>
             </LinearLayout>
 
-            <Button
-                android:id="@+id/native_sign_up_button"
+            <LinearLayout
+                android:id="@+id/signup_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/purple_logo"
-                android:onClick="signUp"
-                android:text="@string/signup_button" />
+                android:layout_below="@+id/social_login_layout"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="20dp">
+
+                <EditText
+                    android:id="@+id/email_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_email"
+                    android:ems="10"
+                    android:hint="@string/email_input_placeholder"
+                    android:inputType="textEmailAddress"/>
+
+                <EditText
+                    android:id="@+id/password_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_password"
+                    android:ems="10"
+                    android:hint="@string/password_input_placeholder"
+                    android:inputType="textPassword"/>
+
+                <EditText
+                    android:id="@+id/name_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_username"
+                    android:ems="10"
+                    android:hint="@string/name_input_placeholder"
+                    android:inputType="textPersonName"/>
+
+                <EditText
+                    android:id="@+id/surname_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_username"
+                    android:ems="10"
+                    android:hint="@string/surname_input_placeholder"
+                    android:inputType="textPersonName"/>
+
+                <LinearLayout
+                    android:id="@+id/identification_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".4"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <Spinner
+                            android:id="@+id/document_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:prompt="@string/document_type_prompt"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".6"
+                        android:baselineAligned="false"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/document_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_password"
+                            android:ems="10"
+                            android:hint="@string/document_number_input_placeholder"
+                            android:inputType="number"
+                            android:singleLine="true"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/address_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".6"
+                        android:baselineAligned="false"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/street_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_password"
+                            android:ems="10"
+                            android:hint="@string/street_name_input_placeholder"
+                            android:inputType="text"
+                            android:singleLine="true"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".2"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/street_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_password"
+                            android:ems="10"
+                            android:hint="@string/street_number_input_placeholder"
+                            android:inputType="number"
+                            android:singleLine="true"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".2"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/zip_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_password"
+                            android:ems="10"
+                            android:hint="@string/zip_code_input_placeholder"
+                            android:inputType="number"
+                            android:singleLine="true"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!--<LinearLayout
+                    android:id="@+id/phone_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".4"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/area_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_password"
+                            android:ems="10"
+                            android:hint="@string/area_code_input_placeholder"
+                            android:inputType="textPostalAddress"
+                            android:singleLine="true"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".6"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/phone_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_password"
+                            android:ems="10"
+                            android:hint="@string/phone_number_input_placeholder"
+                            android:inputType="phone"
+                            android:singleLine="true"/>
+                    </LinearLayout>
+                </LinearLayout>-->
+
+                <Button
+                    android:id="@+id/native_sign_up_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/purple_logo"
+                    android:onClick="signUp"
+                    android:text="@string/signup_button"/>
+            </LinearLayout>
+
         </LinearLayout>
-            </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:facebook="http://schemas.android.com/apk/res-auto"
                 xmlns:app="http://schemas.android.com/tools"
+                xmlns:facebook="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/logged_user_info_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -11,84 +12,78 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
 
-    <ImageView
-        android:id="@+id/social_logo_imageview"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/profile_username"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/facebook_profile_pictureview" />
-
-    <com.facebook.login.widget.ProfilePictureView
-        android:id="@+id/facebook_profile_pictureview"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/profile_username"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/profile_username"
-        facebook:com_facebook_preset_size="small" />
-
-    <ImageView
-        android:id="@+id/gplus_profile_pictureview"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/profile_username"
-        android:layout_alignParentTop="true"
-        android:layout_below="@+id/my_toolbar"
-        android:layout_toLeftOf="@+id/profile_username" />
-
-    <TextView
-        android:id="@+id/profile_username"
-        android:layout_width="210dip"
-        android:layout_height="100dip"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
-        android:textColor="@color/light_background_gray"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/payment_history_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/social_logo_imageview"
-        android:layout_below="@+id/profile_username"
-        android:drawableLeft="@drawable/ic_payment_history"
-        android:onClick="paymentHistory"
-        android:text="@string/payment_history_label" />
-    
-    <Button
-        android:id="@+id/view_promos_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/payment_history_button"
-        android:layout_below="@+id/payment_history_button"
-        android:drawableLeft="@drawable/ic_view_promos"
-        android:onClick="viewPromos"
-        android:text="@string/view_promos_label" />
-
-    <Button
-        android:id="@+id/make_payment_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/view_promos_button"
-        android:layout_below="@+id/view_promos_button"
-        android:drawableLeft="@drawable/ic_make_payment"
-        android:onClick="makePayment"
-        android:text="@string/make_payment_label" />
-
-    <WebView
-        android:id="@+id/current_promos_webView"
-        android:layout_width="match_parent"
+    <ScrollView
+        android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:visibility="gone" />
+        android:layout_below="@+id/my_toolbar">
+
+        <LinearLayout
+            android:id="@+id/seller_menu_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:id="@+id/seller_menu_options"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/social_logo_imageview"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"/>
+
+                <com.facebook.login.widget.ProfilePictureView
+                    android:id="@+id/facebook_profile_pictureview"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    facebook:com_facebook_preset_size="small"/>
+
+                <ImageView
+                    android:id="@+id/gplus_profile_pictureview"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/profile_username"
+                    android:layout_width="210dip"
+                    android:layout_height="100dip"
+                    android:gravity="center"
+                    android:textColor="@color/light_background_gray"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <Button
+                    android:id="@+id/payment_history_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_payment_history"
+                    android:onClick="paymentHistory"
+                    android:text="@string/payment_history_label"/>
+
+                <Button
+                    android:id="@+id/make_payment_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_make_payment"
+                    android:onClick="makePayment"
+                    android:text="@string/make_payment_label"/>
+
+            </LinearLayout>
+
+            <WebView
+                android:id="@+id/OAuthMP_webView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

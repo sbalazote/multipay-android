@@ -35,7 +35,6 @@
     <string name="title_activity_add_card">Nueva tarjeta</string>
     <string name="add_new_card_label">Asociar Nueva Tarjeta</string>
     <string name="payment_history_label">Historial de Pagos</string>
-    <string name="view_promos_label">Promos vigentes</string>
     <string name="empty_credit_cards_label">No hay tarjetas asociadas</string>
     <string name="make_payment_label">GENERAR PAGO</string>
     <string name="facebook_app_id">1614630515425381</string>
@@ -63,8 +62,6 @@
     <string name="item_title_edittext_hint">Articulo generico</string>
     <string name="price_textview_label">Precio del Articulo</string>
     <string name="price_edittext_hint">0.00</string>
-    <string name="item_category_textview_label">Rubro</string>
-    <string name="item_description_textview_label">Descripcion (opcional)</string>
     <string name="item_description_edittext_hint">Publicado por Multipay NFC</string>
     <string name="payment_methods_textview_label">Metodos de Pago Aceptados</string>
     <string name="max_installments_textview_label">Max. Cant. de Cuotas</string>

@@ -51,9 +51,9 @@ public class SignUpActivity extends AppCompatActivity implements OnItemSelectedL
 	private EditText streetName;
 	private EditText streetNumber;
 	private EditText zipCode;
-	private LinearLayout phoneLayout;
+	/*private LinearLayout phoneLayout;
 	private EditText areaCode;
-	private EditText phoneNumber;
+	private EditText phoneNumber;*/
 	private boolean isSeller;
 	private RegistrationService registrationService;
 
@@ -107,9 +107,9 @@ public class SignUpActivity extends AppCompatActivity implements OnItemSelectedL
         streetNumber = (EditText) findViewById(R.id.street_number);
         zipCode = (EditText) findViewById(R.id.zip_code);
         
-        phoneLayout = (LinearLayout) findViewById(R.id.phone_layout);
+        /*phoneLayout = (LinearLayout) findViewById(R.id.phone_layout);
         areaCode = (EditText) findViewById(R.id.area_code);
-        phoneNumber = (EditText) findViewById(R.id.phone_number);
+        phoneNumber = (EditText) findViewById(R.id.phone_number);*/
         
         isSeller = SessionManager.getInstance(getApplicationContext()).getMode().equals("SELLER");
         
@@ -117,7 +117,7 @@ public class SignUpActivity extends AppCompatActivity implements OnItemSelectedL
         	surname.setVisibility(View.GONE);
         	identificationLayout.setVisibility(View.GONE);
         	addressLayout.setVisibility(View.GONE);
-        	phoneLayout.setVisibility(View.GONE);
+        	//phoneLayout.setVisibility(View.GONE);
         }
 
 		mConnectionProgressDialog = new ProgressDialog(this);
@@ -198,12 +198,12 @@ public class SignUpActivity extends AppCompatActivity implements OnItemSelectedL
 			if (!zipCode.getText().toString().isEmpty()) {
 				registrationRequestDTO.setAddressZipCode(zipCode.getText().toString());
 			}
-			if (!areaCode.getText().toString().isEmpty()) {
+			/*if (!areaCode.getText().toString().isEmpty()) {
 				registrationRequestDTO.setPhoneAreaCode(Integer.parseInt(areaCode.getText().toString()));
 			}
 			if (!phoneNumber.getText().toString().isEmpty()) {
 				registrationRequestDTO.setPhoneNumber(phoneNumber.getText().toString());
-			}
+			}*/
 			registrationRequestDTO.setSeller(isSeller);
 			mConnectionProgressDialog.show();
 			Call<LoginResponseDTO> call = registrationService.attemptNativeRegistration(registrationRequestDTO);
@@ -219,6 +219,7 @@ public class SignUpActivity extends AppCompatActivity implements OnItemSelectedL
 							session.createSignInSession(loginResponse.getUserName(), loginResponse.getUserEmail(), "NATIVE");
 							if (session.getMode().equals("SELLER")) {
 								Intent sellerMenuActivityIntent = new Intent(getApplicationContext(), SellerMenuActivity.class);
+								sellerMenuActivityIntent.putExtra("com.multipay.android.FirstUse", true);
 								sellerMenuActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 								startActivity(sellerMenuActivityIntent);
 							} else {

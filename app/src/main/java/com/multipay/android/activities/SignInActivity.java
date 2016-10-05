@@ -257,6 +257,9 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
                         session.createSignInSession(loginResponse.getUserName(), loginResponse.getUserEmail(), "GOOGLE");
                         if (session.getMode().equals("SELLER")) {
                             Intent sellerMenuActivityIntent = new Intent(getApplicationContext(), SellerMenuActivity.class);
+                            if (loginResponse.getUserId() == -1) {
+                                sellerMenuActivityIntent.putExtra("com.multipay.android.FirstUse", true);
+                            }
                             sellerMenuActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(sellerMenuActivityIntent);
                         } else {
@@ -306,6 +309,9 @@ public class SignInActivity extends ActionBarActivity implements FacebookSignInS
                         session.createSignInSession(loginResponse.getUserName(), loginResponse.getUserEmail(), "FACEBOOK");
                         if (session.getMode().equals("SELLER")) {
                             Intent sellerMenuActivityIntent = new Intent(getApplicationContext(), SellerMenuActivity.class);
+                            if (loginResponse.getUserId() == -1) {
+                                sellerMenuActivityIntent.putExtra("com.multipay.android.FirstUse", true);
+                            }
                             sellerMenuActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(sellerMenuActivityIntent);
                         } else {

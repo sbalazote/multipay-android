@@ -1,5 +1,6 @@
 package com.multipay.android.fcm;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -12,7 +13,8 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.multipay.android.R;
-import com.multipay.android.activities.SignInActivity;
+import com.multipay.android.activities.PaymentHistoryActivity;
+import com.multipay.android.activities.SimpleVaultActivity;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -27,12 +29,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 	@Override
 	public void onMessageReceived(RemoteMessage remoteMessage) {
 		// TODO(developer): Handle FCM messages here.
-		sendNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+		sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("text"));
 		// If the application is in the foreground handle both data and notification messages here.
 		// Also if you intend on generating your own notifications as a result of a received FCM
 		// message, here is where that should be initiated. See sendNotification method below.
 		Log.d(TAG, "From: " + remoteMessage.getFrom());
-		Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
+		//Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
 	}
 	// [END receive_message]
 
@@ -42,7 +44,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 	 * @param messageBody FCM message body received.
 	 */
 	private void sendNotification(String messageTitle, String messageBody) {
-		Intent intent = new Intent(this, getApplicationContext().getClass());
+		Intent intent = new Intent(this, PaymentHistoryActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
 				PendingIntent.FLAG_ONE_SHOT);
@@ -54,7 +56,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 				.setContentText(messageBody)
 				.setAutoCancel(true)
 				.setSound(defaultSoundUri)
-				/*.setContentIntent(pendingIntent)*/;
+				.setPriority(Notification.PRIORITY_HIGH)
+				.setContentIntent(pendingIntent);
 
 		NotificationManager notificationManager =
 				(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
