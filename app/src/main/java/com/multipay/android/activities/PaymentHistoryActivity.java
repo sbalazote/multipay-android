@@ -48,15 +48,11 @@ public class PaymentHistoryActivity extends AppCompatActivity {
 
 	public static final int SIMPLE_VAULT_REQUEST_CODE = 10;
 
-	private Retrofit retrofit;
-	private CustomerService customerService;
-
 	protected List<String> mSupportedPaymentTypes = new ArrayList<String>(){{
 		add("credit_card");
 		/*add("debit_card");
 		add("prepaid_card");*/
 	}};
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +64,26 @@ public class PaymentHistoryActivity extends AppCompatActivity {
 		ActionBar ab = getSupportActionBar();
 		// Enable the Up button
 		ab.setDisplayHomeAsUpEnabled(true);
-		session = SessionManager.getInstance(this.getApplicationContext());
 
-		Intent simpleVaultIntent = new Intent(this, SimpleVaultActivity.class);
-		simpleVaultIntent.putExtra("merchantPublicKey", Constant.MERCHANT_PUBLIC_KEY);
-		simpleVaultIntent.putExtra("merchantBaseUrl", Constant.MERCHANT_BASE_URL);
-		simpleVaultIntent.putExtra("merchantGetCustomerUri", Constant.MERCHANT_GET_CUSTOMER_URI);
-		simpleVaultIntent.putExtra("merchantAccessToken", "winning.com@gmail.com");
-		putListExtra(simpleVaultIntent, "supportedPaymentTypes", mSupportedPaymentTypes);
-		startActivityForResult(simpleVaultIntent, SIMPLE_VAULT_REQUEST_CODE);
+		session = SessionManager.getInstance(this.getApplicationContext());
+		if (session.isSignedIn()) {
+			if (session.getMode().equals("BUYER")) {
+				Intent simpleVaultIntent = new Intent(this, SimpleVaultActivity.class);
+				simpleVaultIntent.putExtra("merchantPublicKey", Constant.MERCHANT_PUBLIC_KEY);
+				simpleVaultIntent.putExtra("merchantBaseUrl", Constant.MERCHANT_BASE_URL);
+				simpleVaultIntent.putExtra("merchantGetCustomerUri", Constant.MERCHANT_GET_CUSTOMER_URI);
+				simpleVaultIntent.putExtra("sellerEmail", this.getIntent().getStringExtra("sellerEmail"));
+				putListExtra(simpleVaultIntent, "supportedPaymentTypes", mSupportedPaymentTypes);
+				startActivityForResult(simpleVaultIntent, SIMPLE_VAULT_REQUEST_CODE);
+			} else {
+				session.logoutUser();
+				session.checkLogin(this.getApplicationContext());
+				Toast.makeText(getApplicationContext(), "Debe autenticarse primero como comprador", Toast.LENGTH_LONG).show();
+			}
+		} else {
+			session.checkLogin(this.getApplicationContext());
+			Toast.makeText(getApplicationContext(), "ERROR! Debe estar autenticado como comprador", Toast.LENGTH_LONG).show();
+		}
 	}
 
 	public void createPayment(final Activity activity, String token, Integer installments, Long cardIssuerId, final PaymentMethod paymentMethod, Discount discount) {
@@ -85,19 +92,8 @@ public class PaymentHistoryActivity extends AppCompatActivity {
 
 			LayoutUtil.showProgressLayout(activity);
 
-			// Set item
-			Item item = new Item("id1", 1, new BigDecimal(1000));
-
 			// Set payment method id
 			String paymentMethodId = paymentMethod.getId();
-
-			// Set campaign id
-			Long campaignId = (discount != null) ? discount.getId() : null;
-
-			String merchantAccessToken = session.getUsernameEMail();
-
-			// Set merchant payment
-			MerchantPayment payment = new MerchantPayment(item, installments, cardIssuerId, token, paymentMethodId, campaignId, merchantAccessToken);
 
 			// Create payment
 			HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -107,15 +103,17 @@ public class PaymentHistoryActivity extends AppCompatActivity {
 
 			Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
 
-			retrofit = new Retrofit.Builder()
+			Retrofit retrofit = new Retrofit.Builder()
 					.baseUrl(Constant.MERCHANT_BASE_URL)
 					.addConverterFactory(GsonConverterFactory.create(gson))
 					.client(httpClient.build())
 					.build();
-			customerService = retrofit.create(CustomerService.class);
-			String buyerEmail = "test_payer_12345789@testuser.com";
-			String sellerEmail = "test_user_88250708@testuser.com";
-			PaymentDataDTO paymentDataDTO = new PaymentDataDTO(token, 100.0f, paymentMethodId, buyerEmail, sellerEmail);
+			CustomerService customerService = retrofit.create(CustomerService.class);
+			String buyerEmail = session.getUsernameEMail();
+			String sellerEmail = this.getIntent().getStringExtra("sellerEmail");
+			String description = this.getIntent().getStringExtra("description");
+			String transactionAmount = this.getIntent().getStringExtra("transactionAmount");
+			PaymentDataDTO paymentDataDTO = new PaymentDataDTO(token, description, Float.parseFloat(transactionAmount), paymentMethodId, buyerEmail, sellerEmail);
 			Call<Payment> call = customerService.doPayment(paymentDataDTO);
 
 			call.enqueue(new Callback<Payment>() {

@@ -127,6 +127,11 @@
             android:label="@string/title_activity_simple_vault"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="com.multipay.android.activities.NotificationsActivity"
+            android:label="@string/title_activity_notifications"
+            android:screenOrientation="portrait" >
+        </activity>
 
         <service
             android:name="com.multipay.android.fcm.MyFirebaseMessagingService">

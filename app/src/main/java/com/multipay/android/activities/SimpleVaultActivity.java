@@ -53,7 +53,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SimpleVaultActivity extends AppCompatActivity {
 
 	// Activity parameters
-	protected String mMerchantAccessToken;
 	protected String mMerchantBaseUrl;
 	protected String mMerchantGetCustomerUri;
 	protected String mMerchantPublicKey;
@@ -81,9 +80,9 @@ public class SimpleVaultActivity extends AppCompatActivity {
 	protected MercadoPago mMercadoPago;
 	protected List<String> mSupportedPaymentTypes;
 
-	private Retrofit retrofit;
 	private CustomerService customerService;
-	private SessionManager session;
+	private String sellerEmail;
+	private String buyerEmail;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +90,7 @@ public class SimpleVaultActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView();
 
-		session = SessionManager.getInstance(this.getApplicationContext());
+		SessionManager session = SessionManager.getInstance(this.getApplicationContext());
 
 		HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 		logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -100,7 +99,7 @@ public class SimpleVaultActivity extends AppCompatActivity {
 
 		Gson gson1 = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
 
-		retrofit = new Retrofit.Builder()
+		Retrofit retrofit = new Retrofit.Builder()
 				.baseUrl(Constant.MERCHANT_BASE_URL)
 				.addConverterFactory(GsonConverterFactory.create(gson1))
 				.client(httpClient.build())
@@ -111,7 +110,8 @@ public class SimpleVaultActivity extends AppCompatActivity {
 		mMerchantPublicKey = this.getIntent().getStringExtra("merchantPublicKey");
 		mMerchantBaseUrl = this.getIntent().getStringExtra("merchantBaseUrl");
 		mMerchantGetCustomerUri = this.getIntent().getStringExtra("merchantGetCustomerUri");
-		mMerchantAccessToken = this.getIntent().getStringExtra("merchantAccessToken");
+		sellerEmail = this.getIntent().getStringExtra("sellerEmail");
+		buyerEmail = session.getUsernameEMail();
 		if (this.getIntent().getStringExtra("supportedPaymentTypes") != null) {
 			Gson gson = new Gson();
 			Type listType = new TypeToken<List<String>>(){}.getType();
@@ -334,9 +334,6 @@ public class SimpleVaultActivity extends AppCompatActivity {
 	protected void getCustomerCardsAsync() {
 
 		LayoutUtil.showProgressLayout(mActivity);
-		//ErrorHandlingCallAdapter.MyCall<Customer> call = MerchantServer.getCustomer(this, mMerchantBaseUrl, mMerchantGetCustomerUri, mMerchantAccessToken);
-		String buyerEmail = "test_payer_12345789@testuser.com";
-		String sellerEmail = "test_user_88250708@testuser.com";
 		Call<Customer> call = customerService.getCustomer(sellerEmail, buyerEmail);
 		call.enqueue(new Callback<Customer>() {
 			@Override
@@ -351,23 +348,6 @@ public class SimpleVaultActivity extends AppCompatActivity {
 				//ApiUtil.finishWithApiException(mActivity, apiException);
 			}
 		});
-
-
-		/*call.enqueue(new ErrorHandlingCallAdapter.MyCallback<Customer>() {
-			@Override
-			public void success(Response<Customer> response) {
-
-				mCards = response.body().getCards();
-				LayoutUtil.showRegularLayout(mActivity);
-			}
-
-			@Override
-			public void failure(ApiException apiException) {
-
-				mExceptionOnMethod = "getCustomerCardsAsync";
-				ApiUtil.finishWithApiException(mActivity, apiException);
-			}
-		});*/
 	}
 
 	protected void showSecurityCodeCard(PaymentMethod paymentMethod) {

@@ -2,18 +2,17 @@ package com.multipay.android.dtos;
 
 import java.io.Serializable;
 
-/**
- * Created by Sebastian on 29/04/2016.
- */
 public class PaymentDataDTO implements Serializable {
 	String cardToken;
+	String description;
 	Float transactionAmount;
 	String paymentMethodId;
 	String buyerEmail;
 	String sellerEmail;
 
-	public PaymentDataDTO(String cardToken, Float transactionAmount, String paymentMethodId, String buyerEmail, String sellerEmail) {
+	public PaymentDataDTO(String cardToken, String description, Float transactionAmount, String paymentMethodId, String buyerEmail, String sellerEmail) {
 		this.cardToken = cardToken;
+		this.description = description;
 		this.transactionAmount = transactionAmount;
 		this.paymentMethodId = paymentMethodId;
 		this.buyerEmail = buyerEmail;
@@ -26,6 +25,14 @@ public class PaymentDataDTO implements Serializable {
 
 	public void setCardToken(String cardToken) {
 		this.cardToken = cardToken;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Float getTransactionAmount() {

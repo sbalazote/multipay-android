@@ -9,6 +9,7 @@ import android.content.SharedPreferences.Editor;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.multipay.android.activities.SelectModeActivity;
 import com.multipay.android.utils.GooglePlusSignInUtils;
 
@@ -143,7 +144,7 @@ public class SessionManager {
 	/**
 	 * Verifico el estado de Logueo.
 	 * */
-	private boolean isSignedIn() {
+	public boolean isSignedIn() {
 		return sharedPreferences.getBoolean(IS_SIGNED_IN, false);
 	}
 
@@ -152,7 +153,7 @@ public class SessionManager {
 	 * @return
 	 */
 	public String retrieveRegistrationId() {
-		return sharedPreferences.getString(KEY_REGISTRATION_ID, "");
+		return sharedPreferences.getString(KEY_REGISTRATION_ID, FirebaseInstanceId.getInstance().getToken());
 	}
 	
 	/**
